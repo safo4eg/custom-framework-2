@@ -14,6 +14,7 @@
 
             if(file_exists($file_name)) {
                 require_once($file_name);
+                echo $file_name."<br>";
             }
         }
     });
