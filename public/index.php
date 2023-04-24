@@ -1,8 +1,10 @@
 <?php
     declare(strict_types=1);
+    use Src\Application;
 
     try {
-        $app = require_once(__DIR__.'/../core/bootstrap.php');
+        $bootstrap_path = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'bootstrap.php';
+        $app = require_once($bootstrap_path);
         $app->run();
     } catch(\Throwable $exception) {
         echo '<pre>';
