@@ -38,6 +38,6 @@ class Route
             throw new Error('Такого метода нет');
         }
 
-        call_user_func([new $class, $action]);
+        call_user_func([new $class, $action], new Request());
     }
 }

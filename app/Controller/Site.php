@@ -2,13 +2,14 @@
 namespace Controller;
 
 use Model\People;
+use Src\Request;
 use Src\View;
 
 class Site
 {
-    public function index(): string
+    public function index(Request $request): string
     {
-        $people = People::all();
+        $people = People::where('id', $request->id)->get();
         return new View('site.people', ['people' => $people]);
     }
 
