@@ -1,13 +1,14 @@
 <?php
 namespace Controller;
-use Illuminate\Database\Capsule\Manager as DB;
+
+use Model\People;
 use Src\View;
 
 class Site
 {
     public function index(): string
     {
-        $people = DB::table('people')->get();
+        $people = People::all();
         return new View('site.people', ['people' => $people]);
     }
 
