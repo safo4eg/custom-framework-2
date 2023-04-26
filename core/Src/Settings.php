@@ -27,4 +27,9 @@ class Settings
     {
         return DIRECTORY_SEPARATOR.$this->path['views']?? '';
     }
+
+    public function getDbSetting(): array
+    {
+        return $this->db?? [];
+    }
 }
