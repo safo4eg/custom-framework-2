@@ -1,0 +1,241 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #e8e8e8;
+}
+
+.container {
+    height: 100%;
+    max-width: 1300px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* СТИЛИ ДЛЯ ТАБЛИЦЫ */
+
+.table {
+    width: 100%;
+    margin-bottom: 20px;
+    border: 1px solid #dddddd;
+    border-collapse: collapse;
+}
+.table th {
+    font-weight: bold;
+    padding: 5px;
+    background: #efefef;
+    border: 3px solid #dddddd;
+}
+.table td {
+    text-align: center;
+    border: 3px solid #dddddd;
+    padding: 5px;
+}
+
+.table td .cancel {
+    margin-left: 10px;
+}
+
+.edit_input {
+    width: 100%;
+    padding: 3px;
+}
+
+/* MODAL WINDOW */
+
+.modal {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+.modal-dialog {
+    width: 500px;
+    margin: 100px auto 0 auto;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: .3rem;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    border-bottom: 1px solid #eceeef;
+    font-family: sans-serif;
+}
+
+.modal-title {
+    line-height: 1.5;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.close {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-decoration: none;
+}
+
+.modal-body {
+    max-width: 100%;
+    /*width: 100%;*/
+    /*margin: 0 auto;*/
+    padding: 30px 15px;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+/* HEADER */
+
+header {
+    background-color: #2594e7;
+    height: 100px;
+    width: 100%;
+}
+
+.header-line {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-line span {
+    font-size: 30px;
+}
+
+.header-line nav .link {
+    font-size: 22px;
+    color: black;
+    text-decoration: none;
+}
+
+.header-line nav .link.active {
+    color: #dc2e00;
+}
+
+.header-line nav .link:hover {
+    cursor: pointer;
+    color: #dc2e00;
+}
+
+.header-line nav .link:nth-child(n + 2) {
+    margin-left: 10px;
+}
+
+/* МЕНЮ ФИЛЬТРОВ И КНОПОК НАД СПИСКАМИ *ОБЩЕЕ */
+
+.functions {
+    display: flex;
+    justify-content: space-between;
+    padding: 25px;
+}
+
+.functions .actions .item {
+    padding: 5px 10px;
+}
+
+.functions .actions .item:hover {
+    cursor: pointer;
+}
+
+/* ФОРМА В МОДАЛЬНОМ ОКНЕ *ОБЩЕЕ */
+
+form.general-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+form.general-form .inputs {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+form.general-form .item {
+    width: 200px;
+    height: 40px;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+form.general-form .item:nth-child(even) {
+    margin-left: 10px;
+}
+
+form.general-form .buttons {
+    margin-top: 20px;
+}
+
+form.general-form .buttons .item:hover {
+    cursor: pointer;
+}
+
+/* MAIN INDEX */
+
+.index .form-wrapper {
+    width: 500px;
+    margin: 100px auto 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.index .form-wrapper .title {
+    align-self: center;
+    margin-bottom: 40px;
+    font-size: 26px;
+}
+
+.index .form-wrapper form {
+    align-self: center;
+    max-width: 300px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.index .form-wrapper form input {
+    height: 40px;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+.index .form-wrapper form input:nth-child(n + 2) {
+    margin-top: 5px;
+}
+
+.index .form-wrapper form input.btn:hover {
+    cursor: pointer;
+}
+
+/* СТРАНИЦА ЛИЧНОГО КАБИНЕТА ADMIN */
+
+
+
+
+
+
+
+
+
+

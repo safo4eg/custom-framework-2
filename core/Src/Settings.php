@@ -28,6 +28,27 @@ class Settings
         return DIRECTORY_SEPARATOR.$this->path['views']?? '';
     }
 
+    public function getWebrootsPath(): array
+    {
+        $webroot = $this->path['webroot'];
+        $root = $this->getRootPath();
+        $general_dirs = $webroot['general_dirs'];
+        $webroot_paths = [];
+
+        foreach($webroot as $key => $value) {
+            if($key !== 'general_dirs') {
+                $webroot_paths[$key] =
+                    $root . DIRECTORY_SEPARATOR .
+                    $general_dirs . DIRECTORY_SEPARATOR .
+                    $key . DIRECTORY_SEPARATOR .
+                    $value;
+
+            }
+        }
+
+        return $webroot_paths;
+    }
+
     public function getDbSetting(): array
     {
         return $this->db?? [];

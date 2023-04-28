@@ -1,5 +1,4 @@
 <?php
-
 namespace Src;
 use Exception;
 class View
@@ -7,6 +6,7 @@ class View
     private string $view = '';
     private array $data = [];
     private string $root = '';
+    private array $webroot = [];
     private string $layout = DIRECTORY_SEPARATOR.'layouts'.DIRECTORY_SEPARATOR.'main.php';
 
     public function __construct(string $view = '', array $data = [])
@@ -22,12 +22,22 @@ class View
         $root = $app->settings->getRootPath();
         $path = $app->settings->getViewsPath();
 
+        $this->webroots = $app->settings->getWebrootsPath();
+
         return $_SERVER['DOCUMENT_ROOT'] . $root . $path;
     }
 
     private function getPathToMain(): string
     {
         return $this->root . $this->layout;
+    }
+
+    private function getPathToWebrootLayout(): string
+    {
+        global $app;
+        return $_SERVER['DOCUMENT_ROOT'] . $app->settings->getRootPath() . DIRECTORY_SEPARATOR . "core" .
+            DIRECTORY_SEPARATOR . "layouts" .
+            DIRECTORY_SEPARATOR . "webroot.php";
     }
 
     private function getPathToView(string $view = ''): string
@@ -44,6 +54,11 @@ class View
             ob_start();
             require $path;
             $content = ob_get_clean();
+
+            ob_start();
+            $webroots = $this->webroots;
+            require $this->getPathToWebrootLayout();
+            $webroots = ob_get_clean();
 
             return require($this->getPathToMain());
         }
