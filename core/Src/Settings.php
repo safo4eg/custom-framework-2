@@ -37,12 +37,18 @@ class Settings
 
         foreach($webroot as $key => $value) {
             if($key !== 'general_dirs') {
-                $webroot_paths[$key] =
+                $webroot_path =
                     $root . DIRECTORY_SEPARATOR .
                     $general_dirs . DIRECTORY_SEPARATOR .
-                    $key . DIRECTORY_SEPARATOR .
-                    $value;
-
+                    $key . DIRECTORY_SEPARATOR;
+                if($key === 'js') {
+                    foreach($value as $js_path) {
+                        $webroot_paths[$key][] = $webroot_path.$js_path;
+                    }
+                    $webroot_paths[$key] = array_reverse($webroot_paths[$key]);
+                } else {
+                    $webroot_paths[$key] = $webroot_path.$value;
+                }
             }
         }
 

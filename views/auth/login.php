@@ -19,11 +19,10 @@
 <main class="index">
     <div class="form-wrapper">
         <div class="title">Вход</div>
-        <form action="/" method="POST">
+        <form id="login_form" action="/" method="POST">
             <input type="text" name="login" placeholder="login">
             <input type="password" name="password" placeholder="password">
-            <input type="password" name="confirm" placeholder="confirm">
-            <input class="btn" type="submit" value="Войти">
+            <input id="login_btn" class="btn" type="submit" value="Войти">
         </form>
     </div>
 </main>

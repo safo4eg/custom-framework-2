@@ -2,7 +2,9 @@
     <?php if($key === 'css') { ?>
         <link rel="stylesheet" href="<?=$value?>">
     <?php } else if($key === 'js') { ?>
-        <script defer src="<?=$value?>"></script>
+        <?php foreach($value as $path) { ?>
+            <script defer src="<?=$path?>"></script>
+        <?php } ?>
     <?php } ?>
 <?php } ?>
 
