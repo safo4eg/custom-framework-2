@@ -21,13 +21,13 @@ class Auth
 
                 if (!$employee) {
                     http_response_code(400);
-                    echo json_encode('net', JSON_UNESCAPED_UNICODE);
-                    die();
+                    echo json_encode('net', JSON_UNESCAPED_UNICODE); die();
                 }
 
-                // иначе редирект
+                http_response_code(302);
+                $obj = ['url' => '/go'];
+                echo json_encode($obj, JSON_UNESCAPED_UNICODE); die();
             }
-
             return new View('auth.login');
         }
     }

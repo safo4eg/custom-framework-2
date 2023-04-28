@@ -25,7 +25,16 @@ if(settings.prefix + '/login' === settings.current_uri) {
         event.preventDefault();
         let payload = new FormData(login_form);
         auth_module.login(payload).then(response => {
-
+            response.text().then(text => {
+                text = JSON.parse(text);
+                if(response.status < 400) {
+                    if(response.status === 302) {
+                        window.location.href = settings.prefix + text.url;
+                    }
+                } else {
+                    console.log('какая-то ошыбка');
+                }
+            });
         });
     };
 
