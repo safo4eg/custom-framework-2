@@ -22,19 +22,17 @@ class ListPage
                 $table = $payload['table'];
 
                 if($table === 'employees') {
-                    $employees_list = Employee::all();
+                    $employees_list = Employee::getEmployeesFormattedArray();
                     echo json_encode($employees_list); die();
                 }
 
                 if($table === 'patients') {
                     $patients = Patient::all();
-                    foreach($patients as $patient) {
-                        echo $patient->person->name."<br>";
-                    }
                 }
             }
 
-            return new View('list.show', ['list' => 'список']);
+            $employees_list = Employee::getEmployeesFormattedArray();
+            return new View('list.show', ['employees_list' => $employees_list]);
         }
     }
 }

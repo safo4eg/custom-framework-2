@@ -28,6 +28,7 @@
                     <th>Отчество</th>
                     <th>Дата рождения</th>
                     <th>Должность</th>
+                    <th>Специализация</th>
                     <th>Отделение</th>
                     <th>Кабинет</th>
                     <th>Статус</th>
@@ -36,80 +37,21 @@
                 </thead>
                 <tbody>
 
-                <tr>
-                    <td>
-                        <input type="hidden" value="name">
-                        Gloria
-                    </td>
-                    <td>
-                        <input type="hidden" value="surname">
-                        Reeves
-                    </td>
-                    <td>
-                        <input type="hidden" value="patronymic">
-                        67439
-                    </td>
-                    <td>
-                        <input type="hidden" value="date_of_birth">
-                        10/18/1985
-                    </td>
-                    <td>
-                        <input type="hidden" value="role">
-                        Врач
-                    </td>
-                    <td>
-                        <input type="hidden" value="department">
-                        Терапия
-                    </td>
-                    <td>
-                        <input type="hidden" value="cabinet">
-                        405
-                    </td>
-                    <td>
-                        <input type="hidden" value="status">
-                        В штате
-                    </td>
-                    <td class="action_cell">
-                        <a class="edit" href="">Редактировать</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="hidden" value="name">
-                        Gloria
-                    </td>
-                    <td>
-                        <input type="hidden" value="surname">
-                        Reeves
-                    </td>
-                    <td>
-                        <input type="hidden" value="patronymic">
-                        67439
-                    </td>
-                    <td>
-                        <input type="hidden" value="date_of_birth">
-                        10/18/1985
-                    </td>
-                    <td>
-                        <input type="hidden" value="role">
-                        Врач
-                    </td>
-                    <td>
-                        <input type="hidden" value="department">
-                        Терапия
-                    </td>
-                    <td>
-                        <input type="hidden" value="cabinet">
-                        405
-                    </td>
-                    <td>
-                        <input type="hidden" value="status">
-                        В штате
-                    </td>
-                    <td class="action_cell">
-                        <a class="edit" href="">Редактировать</a>
-                    </td>
-                </tr>
+                <?php foreach($employees_list as $employee) { ?>
+                    <tr>
+                        <?php foreach($employee as $key => $value) { ?>
+                            <?php if($key !== 'id') { ?>
+                                <td>
+                                    <input type="hidden" value="<?= $key ?>">
+                                    <?= $value ?? 'Отсутствует' ?>
+                                </td>
+                            <?php } ?>
+                        <?php } ?>
+                        <td class="action_cell">
+                            <a href="/" class="edit">Редактировать</a>
+                        </td>
+                    </tr>
+                <?php } ?>
 
                 </tbody>
             </table>

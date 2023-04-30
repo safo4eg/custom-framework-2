@@ -2,9 +2,9 @@
     let interactivity_module = {};
 
     interactivity_module.show_employees_list = function(table, payload) {
-        clear_table_body(table);
-        console.log(payload);
-        create_table_rows(table, payload);
+        let table_body = table.querySelector('tbody');
+        clear_table_body(table_body);
+        create_table_rows(table_body, payload);
     }
 
     interactivity_module.clickCancel = function(td) {
@@ -40,23 +40,15 @@
            for(let i = 0; i < entries.length; i++) {
                let key = entries[i][0];
                let value = entries[i][1];
-               if(key === 'person') {
-                   let person_entries = Object.entries(value);
-                   for(let [person_key, person_value] of person_entries) {
-                       key_elem[person_key] = create_table_td(person_key, person_value);
-                   }
-                   continue;
-               }
-
-               key_elem[key] = create_table_td(key, value);
+               key_elem[key] = create_table_td(key, value != null? value: 'Отсутствует');
            }
 
            edit_cell = createEditCell();
 
            tr.append(
                key_elem['name'], key_elem['surname'], key_elem['patronymic'],
-               key_elem['date_of_birth'], key_elem['role_id'], key_elem['department_id'],
-               key_elem['cabinet'], key_elem['status_id'], edit_cell
+               key_elem['date_of_birth'], key_elem['role_id'],key_elem['specialization'],
+               key_elem['department_id'], key_elem['cabinet'], key_elem['status_id'], edit_cell
            );
            table.append(tr);
         });
@@ -72,8 +64,8 @@
         return td;
     }
 
-    function clear_table_body(table) {
-        table.querySelector('tbody').replaceChildren();
+    function clear_table_body(table_body) {
+        table_body.replaceChildren();
     }
 
     function fromTextContentToInput(elem) {
