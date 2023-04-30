@@ -12,13 +12,13 @@ class Auth
     public static function init(IdentityInterface $employee): void
     {
         self::$employee = $employee;
-        if(self::$employee) {
+        if(self::employee()) {
             self::login(self::employee());
         }
     }
 
     // вход пользователя по модели
-    public static function login(identityInterface $employee): void
+    public static function login(IdentityInterface $employee): void
     {
         self::$employee = $employee;
         Session::set('id', self::$employee->getId());
@@ -55,5 +55,4 @@ class Auth
         Session::clear('id');
         return true;
     }
-
 }

@@ -2,7 +2,7 @@
 
 namespace Src\Auth;
 
-interface identityInterface
+interface IdentityInterface
 {
     public function findIdentity(int $id);
     public function getId(): int;

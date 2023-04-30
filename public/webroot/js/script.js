@@ -32,7 +32,7 @@ if(settings.prefix + '/login' === settings.current_uri) {
                         window.location.href = settings.prefix + text.url;
                     }
                 } else {
-                    console.log('какая-то ошыбка');
+                    console.log(text);
                 }
             });
         });

@@ -2,8 +2,10 @@
 
 namespace Model;
 use Illuminate\Database\Eloquent\Model;
+use Src\Auth\IdentityInterface;
+use Model\Man;
 
-class Employee extends Model
+class Employee extends Model implements IdentityInterface
 {
     public $timestamp = false;
     protected $fillable = [
@@ -16,14 +18,18 @@ class Employee extends Model
         'cabinet'
     ];
 
+    public function man() {
+        return $this->belongsTo(Man::class);
+    }
+
     public function findIdentity(int $id)
     {
-        return self::where('id', $id)->first();
+        self::where('people_id', $id)->first();
     }
 
     public function getId(): int
     {
-        return $this->id;
+        return $this->man->id;
     }
 
     public function attemptIdentity(array $credentials)

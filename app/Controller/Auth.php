@@ -5,11 +5,13 @@ namespace Controller;
 use Model\Employee;
 use Src\Request;
 use Src\View;
+use Src\Response;
 
 class Auth
 {
     public function login(Request $request): string
     {
+        $response = new Response();
         $payload = $request->all();
 
         if ($request->method === 'GET') {
@@ -20,15 +22,17 @@ class Auth
                 $employee = Employee::where('login', $login)->first();
 
                 if (!$employee) {
-                    http_response_code(400);
-                    echo json_encode('net', JSON_UNESCAPED_UNICODE); die();
+                    echo $response->setStatus('error')->setCode(400)->setData('Какая-то ошибка'); die();
                 }
 
-                http_response_code(302);
-                $obj = ['url' => '/go'];
-                echo json_encode($obj, JSON_UNESCAPED_UNICODE); die();
+                echo $response->setStatus('url')->setCode(302)->setData('/go');die();
             }
             return new View('auth.login');
         }
+    }
+
+    public function go(Request  $request): string
+    {
+        return new View('auth.login');
     }
 }
