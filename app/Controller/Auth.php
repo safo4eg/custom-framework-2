@@ -2,10 +2,10 @@
 
 namespace Controller;
 
-use Model\Employee;
 use Src\Request;
 use Src\View;
 use Src\Response;
+use Src\Auth\Auth as coreAuth;
 
 class Auth
 {
@@ -15,24 +15,20 @@ class Auth
         $payload = $request->all();
 
         if ($request->method === 'GET') {
-            if (!empty($payload) && isset($payload['login']) && isset($payload['password'])) {
-                $login = $payload['login'];
-                $password = $payload['password'];
-
-                $employee = Employee::where('login', $login)->first();
-
-                if (!$employee) {
-                    echo $response->setStatus('error')->setCode(400)->setData('Какая-то ошибка'); die();
-                }
-
-                echo $response->setStatus('url')->setCode(302)->setData('/go');die();
-            }
             return new View('auth.login');
         }
+
+        if(coreAuth::attempt($payload)){
+            echo $response->setStatus('url')->setCode(302)->setData('/list');die();
+        }
+
+        echo $response->setStatus('error')->setCode(400)->setData('Неверный логин и/или пароль'); die();
     }
 
-    public function go(Request  $request): string
+    public function logout(Request $request): string
     {
-        return new View('auth.login');
+        coreAuth::logout();
+        app()->route->redirect('/login');
     }
+
 }

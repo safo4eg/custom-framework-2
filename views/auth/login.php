@@ -8,14 +8,7 @@
     <title>Login</title>
 </head>
 <body>
-<header>
-    <div class="container">
-        <div class="header-line">
-            <span>В поликлинике</span>
-        </div>
-    </div>
-</header>
-
+<?= var_dump($_SESSION) ?>
 <main class="index">
     <div class="form-wrapper">
         <div class="title">Вход</div>

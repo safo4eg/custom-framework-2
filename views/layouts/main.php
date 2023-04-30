@@ -10,6 +10,21 @@
 </head>
 <body>
 
+<header>
+    <div class="container">
+        <div class="header-line">
+            <span>В поликлинике</span>
+            <nav>
+                <?php if(app()->auth::check()) { ?>
+                    <a class="link" href="<?= app()->route->getUrl('/logout') ?>">Выход</a>
+                <?php } else { ?>
+                    <a class="link" href="<?= app()->route->getUrl('/login') ?>">Вход</a>
+                <?php } ?>
+            </nav>
+        </div>
+    </div>
+</header>
+
 <div>
     <?= $content ?? ''; ?>
 </div>

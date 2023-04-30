@@ -3,7 +3,6 @@
 namespace Model;
 use Illuminate\Database\Eloquent\Model;
 use Src\Auth\IdentityInterface;
-use Model\Man;
 
 class Employee extends Model implements IdentityInterface
 {
@@ -17,19 +16,20 @@ class Employee extends Model implements IdentityInterface
         'department_id',
         'cabinet'
     ];
+    protected $with = ['person'];
 
-    public function man() {
-        return $this->belongsTo(Man::class);
+    public function person() {
+        return $this->belongsTo(Person::class);
     }
 
     public function findIdentity(int $id)
     {
-        self::where('people_id', $id)->first();
+        return self::where('person_id', $id)->first();
     }
 
     public function getId(): int
     {
-        return $this->man->id;
+        return $this->person_id;
     }
 
     public function attemptIdentity(array $credentials)

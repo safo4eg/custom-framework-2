@@ -1,19 +1,31 @@
 
-if('dd' === '/practic/profile_admin_employees_list.html') {
+
+if(settings.prefix + '/list' === settings.current_uri) {
     let table = document.querySelector('table');
-    let add_employee_btn = document.getElementById('add_employee_btn');
+    let employees_tab = document.getElementById('employees_tab');
+    let patients_tab = document.getElementById('patients_tab');
 
-    table.addEventListener('click', edit);
+    employees_tab.onclick = (event) => {
+        auth_module.get_employees_list().then(response => {
+            response.text().then(text => {
+                let payload = JSON.parse(text);
+                interactivity_module.show_employees_list(table, payload);
+            });
+        });
+    }
 
-    add_employee_btn.addEventListener('click', function() {
-       let modal_id = modal_window_module.getModalId(add_employee_btn);
-       let modal = document.getElementById(modal_id);
-       let actions = modal_window_module.show(modal);
-
-       actions[0].addEventListener('click', modal_accept(actions[0], modal));
-       actions[1].addEventListener('click', modal_cancel(actions[1], modal));
-
-    });
+    // let add_employee_btn = document.getElementById('add_employee_btn');
+    // table.addEventListener('click', edit);
+    //
+    // add_employee_btn.addEventListener('click', function() {
+    //    let modal_id = modal_window_module.getModalId(add_employee_btn);
+    //    let modal = document.getElementById(modal_id);
+    //    let actions = modal_window_module.show(modal);
+    //
+    //    actions[0].addEventListener('click', modal_accept(actions[0], modal));
+    //    actions[1].addEventListener('click', modal_cancel(actions[1], modal));
+    //
+    // });
 }
 
 
@@ -37,7 +49,6 @@ if(settings.prefix + '/login' === settings.current_uri) {
             });
         });
     };
-
 }
 
 function modal_accept(self, modal) {

@@ -15,6 +15,19 @@ body {
     margin: 0 auto;
 }
 
+/* ОБЕРТКА ТАБЛИЦЫ + ЗАГОЛОВОК */
+.list-wrapper {
+    width: 100%;
+}
+
+.list-wrapper .title {
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 24px;
+}
+
 /* СТИЛИ ДЛЯ ТАБЛИЦЫ */
 
 .table {
@@ -228,7 +241,25 @@ form.general-form .buttons .item:hover {
     cursor: pointer;
 }
 
-/* СТРАНИЦА ЛИЧНОГО КАБИНЕТА ADMIN */
+/* СТРАНИЦА ЛИЧНОГО КАБИНЕТА */
+
+.tabs {
+    margin-bottom: 10px;
+}
+
+.tabs .item {
+    border: 1px solid inherit;
+    font-size: 14px;
+    padding: 5px 10px;
+}
+
+.tabs .item.active {
+    background-color: #e8eaef;
+}
+
+.tabs .item:hover {
+    cursor: pointer;
+}
 
 
 

@@ -1,15 +1,16 @@
 ;(function() {
     let interactivity_module = {};
 
+    interactivity_module.show_employees_list = function(table, payload) {
+        clear_table_body(table);
+        console.log(payload);
+        create_table_rows(table, payload);
+    }
+
     interactivity_module.clickCancel = function(td) {
         td.textContent = '';
-
-        let edit_btn = document.createElement('A');
-        edit_btn.href = '/';
-        edit_btn.classList.add('edit');
-        edit_btn.textContent = 'Редактировать';
-
-        td.append(edit_btn);
+        let edit_cell = createEditCell();
+        td.append(edit_cell);
     }
 
     interactivity_module.clickEdit = function(td) {
@@ -31,6 +32,50 @@
         return [actions, td_info];
     }
 
+    function create_table_rows(table, payload) {
+        payload.forEach(elem => {
+           let tr = document.createElement('TR');
+           let key_elem = {};
+           let entries = Object.entries(elem);
+           for(let i = 0; i < entries.length; i++) {
+               let key = entries[i][0];
+               let value = entries[i][1];
+               if(key === 'person') {
+                   let person_entries = Object.entries(value);
+                   for(let [person_key, person_value] of person_entries) {
+                       key_elem[person_key] = create_table_td(person_key, person_value);
+                   }
+                   continue;
+               }
+
+               key_elem[key] = create_table_td(key, value);
+           }
+
+           edit_cell = createEditCell();
+
+           tr.append(
+               key_elem['name'], key_elem['surname'], key_elem['patronymic'],
+               key_elem['date_of_birth'], key_elem['role_id'], key_elem['department_id'],
+               key_elem['cabinet'], key_elem['status_id'], edit_cell
+           );
+           table.append(tr);
+        });
+    }
+
+    function create_table_td(key, value) {
+        let td = document.createElement('TD');
+        let hidden_input = document.createElement('INPUT');
+        hidden_input.type = 'hidden';
+        hidden_input.value = key;
+
+        td.textContent = value;
+        return td;
+    }
+
+    function clear_table_body(table) {
+        table.querySelector('tbody').replaceChildren();
+    }
+
     function fromTextContentToInput(elem) {
         let general_attr = {};
 
@@ -49,6 +94,19 @@
         elem.append(text_input);
 
         return general_attr;
+    }
+
+    function createEditCell() {
+        let edit_cell = document.createElement('TD');
+        edit_cell.classList.add('action_cell');
+
+        let edit_link = document.createElement('A');
+        edit_link.href = '/';
+        edit_link.classList.add('edit');
+        edit_link.textContent = 'Редактировать';
+
+        edit_cell.append(edit_link)
+        return edit_cell;
     }
 
     function createActions() {
