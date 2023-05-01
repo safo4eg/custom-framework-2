@@ -14,8 +14,7 @@ class Patient extends Model
         'date_of_birth' => 'date_of_birth', 'status_id' => 'status_id'
     ];
 
-    public static function getFieldsInFormattedArray(): array {
-        $patients_list = self::all()->toArray();
+    public static function getFieldsInFormattedArray(array $patients_list): array {
         $formatted_patients_list = [];
 
         foreach($patients_list as $patient) {

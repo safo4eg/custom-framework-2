@@ -1,6 +1,20 @@
 ;(function() {
     let interactivity_module = {};
 
+    interactivity_module.table_is_empty = function(table) {
+        let table_body = table.querySelector('tbody');
+        clear_table_body(table_body);
+
+        let tr = document.createElement('TR');
+        let td = document.createElement('TD');
+        td.classList.add('empty');
+        td.textContent = 'Пусто';
+        td.colSpan = 10;
+
+        table_body.append(tr, td);
+
+    }
+
     interactivity_module.show_patients_list = function(table, payload) {
         clear_table(table);
         create_table_head(table, settings.patients_thead_fields);

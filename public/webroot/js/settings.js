@@ -26,7 +26,7 @@
         patronymic: 'Отчество',
         date_of_birth: 'Дата рождения',
         status_id: 'Статус',
-        action: "действие"
+        action: "Действие"
     };
 
     window.settings = settings;

@@ -25,7 +25,14 @@ if(settings.auth.prefix + '/list' === settings.auth.current_uri) {
            response.text().then(text => {
                let payload = JSON.parse(text).data;
                if(response.status < 400) {
-                   console.log(payload);
+                   if(payload.length !== 0) {
+                       if(table_title.textContent.toLowerCase() === 'работники') {
+                           interactivity_module.show_employees_list(table, payload);
+                       } else {
+                           interactivity_module.show_patients_list(table, payload);
+                       }
+                   }
+                   else interactivity_module.table_is_empty(table);
                }
            });
         });
