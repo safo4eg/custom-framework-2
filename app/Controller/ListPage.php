@@ -22,7 +22,7 @@ class ListPage
                 $table = $payload['table'];
 
                 if($table === 'employees') {
-                    $employees_list = Employee::getEmployeesFormattedArray();
+                    $employees_list = Employee::getFieldsInFormattedArray();
                     echo json_encode($employees_list); die();
                 }
 
@@ -31,7 +31,7 @@ class ListPage
                 }
             }
 
-            $employees_list = Employee::getEmployeesFormattedArray();
+            $employees_list = Employee::getFieldsInFormattedArray();
             return new View('list.show', ['employees_list' => $employees_list]);
         }
     }
