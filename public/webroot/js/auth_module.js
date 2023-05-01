@@ -1,6 +1,11 @@
 ;(function() {
     let auth = {};
 
+    auth.search_person = async function(search_params) {
+        let result = await fetch(settings.auth.prefix + `/search?${search_params}`);
+        return result;
+    }
+
     auth.get_patients_list = async function() {
         let result = await fetch(settings.auth.prefix + '/list?table=patients');
         return result;

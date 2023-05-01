@@ -4,7 +4,12 @@
 
         <div class="functions">
             <div class="filters">
-                какие-то фильтры
+                <form id="search_form" action="/">
+                    <input class="item" type="text" name="name" placeholder="Имя">
+                    <input class="item" type="text" name="surname" placeholder="Фамилия">
+                    <input class="item" type="text" name="patronymic" placeholder="Отчество">
+                    <input id="search_btn" class="item" type="submit" value="Найти">
+                </form>
             </div>
 
             <div class="actions">
@@ -19,7 +24,7 @@
         </div>
 
         <div class="list-wrapper">
-            <div class="title">Работники</div>
+            <div id="table_title" class="title">Работники</div>
             <table class="table">
                 <thead>
                 <tr>

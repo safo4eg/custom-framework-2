@@ -162,6 +162,20 @@ header {
     padding: 25px;
 }
 
+.functions .filters {
+    display: flex;
+}
+
+.functions .filters form {
+    display: flex;
+    align-items: center;
+}
+
+.functions .filters form .item {
+    margin-left: 3px;
+    padding: 3px 5px;
+}
+
 .functions .actions .item {
     padding: 5px 10px;
 }
@@ -254,7 +268,12 @@ form.general-form .buttons .item:hover {
 }
 
 .tabs .item.active {
+    pointer-events: none;
     background-color: #e8eaef;
+}
+
+.tabs .item.active:hover {
+    cursor: default;
 }
 
 .tabs .item:hover {

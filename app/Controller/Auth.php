@@ -3,6 +3,7 @@
 namespace Controller;
 
 use Src\Request;
+use Src\Session;
 use Src\View;
 use Src\Response;
 use Src\Auth\Auth as coreAuth;
@@ -28,6 +29,7 @@ class Auth
     public function logout(Request $request): string
     {
         coreAuth::logout();
+        session_unset();
         app()->route->redirect('/login');
     }
 

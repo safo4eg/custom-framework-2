@@ -9,7 +9,26 @@ if(settings.auth.prefix + '/list' === settings.auth.current_uri) {
     let search_btn = document.getElementById('search_btn');
 
     search_btn.onclick = (event) => {
+        event.preventDefault();
+        let search_form = document.getElementById('search_form');
+        let form_data_array = Array.from(new FormData(search_form));
+        let search_params = '';
+        for(let [key, value] of form_data_array) {
+            if(value !== '') {
+                search_params += (search_params !== '')?
+                    ("&" + key + '=' + value.toLowerCase()):
+                    (key + '=' + value.toLowerCase());
+            }
+        }
 
+        auth_module.search_person(search_params).then(response => {
+           response.text().then(text => {
+               let payload = JSON.parse(text).data;
+               if(response.status < 400) {
+                   console.log(payload);
+               }
+           });
+        });
     }
 
     employees_tab.onclick = (event) => {
