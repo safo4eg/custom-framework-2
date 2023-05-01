@@ -1,10 +1,16 @@
 ;(function() {
     let interactivity_module = {};
 
+    interactivity_module.show_patients_list = function(table, payload) {
+        clear_table(table);
+        create_table_head(table, settings.patients_thead_fields);
+        create_table_body(table, payload, settings.patients_thead_fields);
+    }
+
     interactivity_module.show_employees_list = function(table, payload) {
-        let table_body = table.querySelector('tbody');
-        clear_table_body(table_body);
-        create_table_rows(table_body, payload);
+        clear_table(table);
+        create_table_head(table, settings.employees_thead_fields);
+        create_table_body(table, payload, settings.employees_thead_fields);
     }
 
     interactivity_module.clickCancel = function(td) {
@@ -32,7 +38,8 @@
         return [actions, td_info];
     }
 
-    function create_table_rows(table, payload) {
+    function create_table_body(table, payload, fields) {
+        let tbody = document.createElement('TBODY');
         payload.forEach(elem => {
            let tr = document.createElement('TR');
            let key_elem = {};
@@ -45,13 +52,15 @@
 
            edit_cell = createEditCell();
 
-           tr.append(
-               key_elem['name'], key_elem['surname'], key_elem['patronymic'],
-               key_elem['date_of_birth'], key_elem['role_id'],key_elem['specialization'],
-               key_elem['department_id'], key_elem['cabinet'], key_elem['status_id'], edit_cell
-           );
-           table.append(tr);
+           for(let key in fields) {
+               if(key !== 'action') {
+                   tr.append(key_elem[key]);
+               }
+           }
+           tr.append(edit_cell);
+           tbody.append(tr);
         });
+        table.append(tbody);
     }
 
     function create_table_td(key, value) {
@@ -61,11 +70,28 @@
         hidden_input.value = key;
 
         td.textContent = value;
+        td.append(hidden_input);
         return td;
+    }
+
+    function create_table_head(table, fields) {
+        let thead = document.createElement('THEAD');
+        let tr = document.createElement('TR');
+        for(let key in fields) {
+            let th = document.createElement('TH');
+            th.textContent = fields[key];
+            tr.append(th);
+        }
+        thead.append(tr);
+        table.append(thead);
     }
 
     function clear_table_body(table_body) {
         table_body.replaceChildren();
+    }
+
+    function clear_table(table) {
+        table.replaceChildren();
     }
 
     function fromTextContentToInput(elem) {

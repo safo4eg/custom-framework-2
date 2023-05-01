@@ -1,16 +1,40 @@
 
 
-if(settings.prefix + '/list' === settings.current_uri) {
+if(settings.auth.prefix + '/list' === settings.auth.current_uri) {
     let table = document.querySelector('table');
+    let table_title = document.getElementById('table_title');
     let employees_tab = document.getElementById('employees_tab');
     let patients_tab = document.getElementById('patients_tab');
 
+    let search_btn = document.getElementById('search_btn');
+
+    search_btn.onclick = (event) => {
+
+    }
+
     employees_tab.onclick = (event) => {
+        patients_tab.classList.remove('active');
+        employees_tab.classList.add('active');
+        table_title.textContent = 'Работники';
+
         auth_module.get_employees_list().then(response => {
             response.text().then(text => {
-                let payload = JSON.parse(text);
+                let payload = JSON.parse(text).data;
                 interactivity_module.show_employees_list(table, payload);
             });
+        });
+    }
+
+    patients_tab.onclick = (event) => {
+        employees_tab.classList.remove('active');
+        patients_tab.classList.add('active');
+        table_title.textContent = 'Пациенты';
+
+        auth_module.get_patients_list().then(response => {
+           response.text().then(text => {
+               let payload = JSON.parse(text).data;
+               interactivity_module.show_patients_list(table, payload);
+           });
         });
     }
 
@@ -29,7 +53,7 @@ if(settings.prefix + '/list' === settings.current_uri) {
 }
 
 
-if(settings.prefix + '/login' === settings.current_uri) {
+if(settings.auth.prefix + '/login' === settings.auth.current_uri) {
     let login_form = document.getElementById('login_form');
     let login_btn = document.getElementById('login_btn');
 
@@ -41,7 +65,7 @@ if(settings.prefix + '/login' === settings.current_uri) {
                 text = JSON.parse(text);
                 if(response.status < 400) {
                     if(response.status === 302) {
-                        window.location.href = settings.prefix + text.url;
+                        window.location.href = settings.auth.prefix + text.url;
                     }
                 } else {
                     console.log(text);

@@ -2,18 +2,20 @@
 
 namespace Controller;
 
-use Model\Patient;
 use Src\Request;
+use Src\Response;
 use Src\Session;
 use Src\View;
 
 use Model\Employee;
+use Model\Patient;
 use Model\Person;
 
 class ListPage
 {
     public function show(Request $request): string
     {
+        $response = new Response();
         $payload = $request->all();
 
         if($request->method === 'GET') {
@@ -23,11 +25,12 @@ class ListPage
 
                 if($table === 'employees') {
                     $employees_list = Employee::getFieldsInFormattedArray();
-                    echo json_encode($employees_list); die();
+                    echo $response->setData($employees_list); die();
                 }
 
                 if($table === 'patients') {
-                    $patients = Patient::all();
+                    $patients_list = Patient::getFieldsInFormattedArray();
+                    echo $response->setData($patients_list); die();
                 }
             }
 
