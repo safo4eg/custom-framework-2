@@ -1,6 +1,27 @@
 ;(function() {
     let interactivity_module = {};
 
+    interactivity_module.clear_form = function(form) {
+        let inputs = Array.from(form.querySelector('.inputs').children);
+        inputs.forEach(elem => {
+           if(elem.tagName === 'INPUT') {
+               elem.value = '';
+           }
+
+           if(elem.tagName === 'SELECT') {
+               let options = Array.from(elem.children);
+               options.forEach(option => {
+                  if(option.value === '1') option.selected;
+               });
+           }
+        });
+    }
+
+    interactivity_module.add_new_trs = function(table, payload) {
+        let trs_list = create_table_trs_list(payload, settings.employees_thead_fields);
+        add_table_body(table, trs_list);
+    }
+
     interactivity_module.table_is_empty = function(table) {
         let table_body = table.querySelector('tbody');
         clear_table_body(table_body);
@@ -18,13 +39,13 @@
     interactivity_module.show_patients_list = function(table, payload) {
         clear_table(table);
         create_table_head(table, settings.patients_thead_fields);
-        create_table_body(table, payload, settings.patients_thead_fields);
+        create_table_body(table, create_table_trs_list(payload, settings.patients_thead_fields));
     }
 
     interactivity_module.show_employees_list = function(table, payload) {
         clear_table(table);
         create_table_head(table, settings.employees_thead_fields);
-        create_table_body(table, payload, settings.employees_thead_fields);
+        create_table_body(table, create_table_trs_list(payload, settings.employees_thead_fields));
     }
 
     interactivity_module.clickCancel = function(td) {
@@ -52,28 +73,43 @@
         return [actions, td_info];
     }
 
-    function create_table_body(table, payload, fields) {
-        let tbody = document.createElement('TBODY');
+    function create_table_trs_list(payload, fields) {
+        let trs_list = [];
         payload.forEach(elem => {
-           let tr = document.createElement('TR');
-           let key_elem = {};
-           let entries = Object.entries(elem);
-           for(let i = 0; i < entries.length; i++) {
-               let key = entries[i][0];
-               let value = entries[i][1];
-               key_elem[key] = create_table_td(key, value != null? value: 'Отсутствует');
-           }
+            let tr = document.createElement('TR');
+            let key_elem = {};
+            let entries = Object.entries(elem);
+            for(let i = 0; i < entries.length; i++) {
+                let key = entries[i][0];
+                let value = entries[i][1];
+                key_elem[key] = create_table_td(key, value != null? value: 'Отсутствует');
+            }
 
-           edit_cell = createEditCell();
+            edit_cell = createEditCell();
 
-           for(let key in fields) {
-               if(key !== 'action') {
-                   tr.append(key_elem[key]);
-               }
-           }
-           tr.append(edit_cell);
-           tbody.append(tr);
+            for(let key in fields) {
+                if(key !== 'action') {
+                    tr.append(key_elem[key]);
+                }
+            }
+            tr.append(edit_cell);
+            trs_list.push(tr);
         });
+        return trs_list;
+    }
+
+    function add_table_body(table, tr_list) {
+        let tbody = table.querySelector('tbody');
+        tr_list.forEach(elem => {
+           tbody.append(elem);
+        });
+    }
+
+    function create_table_body(table, trs_list) {
+        let tbody = document.createElement('TBODY');
+        trs_list.forEach(elem => {
+            tbody.append(elem);
+        })
         table.append(tbody);
     }
 

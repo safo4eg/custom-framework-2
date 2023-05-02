@@ -1,6 +1,14 @@
 ;(function() {
     let auth = {};
 
+    auth.add_employee = async function(payload) {
+        let result = await fetch(settings.auth.prefix + '/add', {
+            method: 'POST',
+            body: payload
+        });
+        return result;
+    }
+
     auth.search_person = async function(search_params) {
         let result = await fetch(settings.auth.prefix + `/search?${search_params}`);
         return result;

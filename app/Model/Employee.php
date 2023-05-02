@@ -14,18 +14,19 @@ class Employee extends Model implements IdentityInterface, DisplayedInterface
         'department' => 'department', 'cabinet' => 'cabinet', 'status_id' => 'status_id'
     ];
 
-    public $timestamp = false;
+    public $timestamps = false;
+    public $primaryKey = 'person_id';
+    public $incrementing = false;
     protected $fillable = [
         'login',
         'password',
-        'people_id',
+        'person_id',
         'role_id',
         'specialization',
         'department_id',
-        'cabinet'
+        'cabinet',
     ];
     protected  $with = ['person', 'role', 'department'];
-
     public function department() {
         return $this->belongsTo(Department::class);
     }
@@ -38,7 +39,6 @@ class Employee extends Model implements IdentityInterface, DisplayedInterface
 
     public static function getFieldsInFormattedArray(array $employees_list): array {
         $formatted_employees_list = [];
-
         foreach($employees_list as $employee) {
             $current_employee = [];
             foreach($employee as $outer_key => $outer_value) {
@@ -54,17 +54,7 @@ class Employee extends Model implements IdentityInterface, DisplayedInterface
                     }
                     continue;
                 }
-//                if(isset($outer_value)) {
-//                    if(in_array($outer_key, self::$primary_fields)) {
-//                        foreach($outer_value as $inner_key => $inner_value) {
-//                            $temp_key = ($outer_key !== 'person')? $outer_key: $outer_key."_".$inner_key;
-//                            if(in_array($temp_key, self::$visible_fields)) {
-//                                $current_employee[$temp_key] = $inner_value;
-//                            }
-//                        }
-//                        continue;
-//                    }
-//                }
+
                 if(in_array($outer_key, self::$visible_fields)) {
                     $current_employee[$outer_key] = $outer_value;
                 }

@@ -6,6 +6,8 @@ if(settings.auth.prefix + '/list' === settings.auth.current_uri) {
     let employees_tab = document.getElementById('employees_tab');
     let patients_tab = document.getElementById('patients_tab');
 
+    let add_employee_btn = document.getElementById('add_employee_btn');
+
     let search_btn = document.getElementById('search_btn');
 
     search_btn.onclick = (event) => {
@@ -64,18 +66,18 @@ if(settings.auth.prefix + '/list' === settings.auth.current_uri) {
         });
     }
 
-    // let add_employee_btn = document.getElementById('add_employee_btn');
-    // table.addEventListener('click', edit);
-    //
-    // add_employee_btn.addEventListener('click', function() {
-    //    let modal_id = modal_window_module.getModalId(add_employee_btn);
-    //    let modal = document.getElementById(modal_id);
-    //    let actions = modal_window_module.show(modal);
-    //
-    //    actions[0].addEventListener('click', modal_accept(actions[0], modal));
-    //    actions[1].addEventListener('click', modal_cancel(actions[1], modal));
-    //
-    // });
+
+    table.addEventListener('click', edit);
+
+    add_employee_btn.addEventListener('click', function() {
+       let modal_id = modal_window_module.getModalId(add_employee_btn);
+       let modal = document.getElementById(modal_id);
+       let actions = modal_window_module.show(modal);
+
+       actions[0].addEventListener('click', modal_accept(actions[0], modal, table, table_title));
+       actions[1].addEventListener('click', modal_cancel(actions[1], modal));
+
+    });
 }
 
 
@@ -101,27 +103,31 @@ if(settings.auth.prefix + '/login' === settings.auth.current_uri) {
     };
 }
 
-function modal_accept(self, modal) {
+function modal_accept(self, modal, table, table_title) {
 
     let func = () => {
-        let form = modal.querySelector('.general-form');
+        let modal_id = modal.id;
+        let form = modal.querySelector('form');
         let payload = new FormData(form);
-        // здесь отправка запроса на сервер(в нем все остальные пункты)
 
-        fetch('employee.json').then(response => {
-            response.text().then(data => { // в теле будет имитация принятия данных и вывода их в таблицу
-                modal_window_module.cancel(modal);
-                self.removeEventListener('click', func);
-                console.log(JSON.parse(data));
+        if(modal_id === 'add_employee_modal') {
+            auth_module.add_employee(payload).then(response => {
+                response.text().then(text => {
+                    if(response.status < 400) {
+                        if(table_title.textContent.toLowerCase() === 'работники') {
+                            payload = JSON.parse(text).data;
+                            interactivity_module.add_new_trs(table, payload);
+                        }
+                        interactivity_module.clear_form(form);
+                        modal_window_module.cancel(modal);
+                        self.removeEventListener('click', func);
+                    }
+                });
             });
-        });
+        }
+
     }
     return func;
-    // получить все данные из формы +
-    // отправить данные на сервер
-    // обработать данные(валидация)
-    // добавить пользователя в таблицу ++
-    // закрыть модальное окно
 }
 
 function modal_cancel(self, modal) {

@@ -52,6 +52,10 @@ body {
     margin-left: 10px;
 }
 
+.table td.empty {
+    font-size: 32px
+}
+
 .edit_input {
     width: 100%;
     padding: 3px;

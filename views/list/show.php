@@ -70,15 +70,29 @@
                         <a href="" title="Close" class="close">×</a>
                     </div>
                     <div class="modal-body">
-                        <form class="general-form" action="/">
+                        <form id="add_employee_form" class="general-form" action="/">
                             <div class="inputs">
+                                <input class="item" type="text" name="login" placeholder="login">
+                                <input class="item" type="password" name="password" placeholder="password">
                                 <input class="item" type="text" name="name" placeholder="name">
                                 <input class="item" type="text" name="surname" placeholder="surname">
                                 <input class="item" type="text" name="patronymic" placeholder="patronymic">
                                 <input class="item" type="date" name="date_of_birth">
-                                <input class="item" type="text" name="role" placeholder="role">
+
+                                <select class="item" name="role_id">
+                                    <?php foreach($roles_list as $role) { ?>
+                                        <option value="<?=$role->id?>"><?=$role->name?></option>
+                                    <?php } ?>
+                                </select>
+
                                 <input class="item" type="text" name="specialization" placeholder="specialization">
-                                <input class="item" type="text" name="department" placeholder="department">
+
+                                <select class="item" name="department_id">
+                                    <?php foreach($departments_list as $department) { ?>
+                                        <option value="<?=$department->id?>"><?=$department->name?></option>
+                                    <?php } ?>
+                                </select>
+
                                 <input class="item" type="text" name="cabinet" placeholder="cabinet">
                             </div>
 
