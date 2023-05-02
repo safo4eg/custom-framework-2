@@ -106,4 +106,30 @@
             </div> <!-- modal-dialog -->
         </div> <!-- add_employee_modal -->
 
+        <div id="add_patient_modal" class="modal hidden">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Добавить нового пациента</h3>
+                        <a href="" title="Close" class="close">×</a>
+                    </div>
+                    <div class="modal-body">
+                        <form id="add_patient_modal" class="general-form" action="/">
+                            <div class="inputs">
+                                <input class="item" type="text" name="name" placeholder="name">
+                                <input class="item" type="text" name="surname" placeholder="surname">
+                                <input class="item" type="text" name="patronymic" placeholder="patronymic">
+                                <input class="item" type="date" name="date_of_birth">
+                            </div>
+
+                            <div class="buttons">
+                                <input class="item accept" type="button" value="Принять">
+                                <input class="item cancel" type="button" value="Отменить">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div> <!-- modal-dialog -->
+        </div> <!-- add_employee_modal -->
+
     </div>

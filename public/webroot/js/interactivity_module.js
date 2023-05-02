@@ -17,8 +17,10 @@
         });
     }
 
-    interactivity_module.add_new_trs = function(table, payload) {
-        let trs_list = create_table_trs_list(payload, settings.employees_thead_fields);
+    interactivity_module.add_new_trs = function(table, payload, modal_id) {
+        let trs_list;
+        if(modal_id === 'add_employee_modal') trs_list = create_table_trs_list(payload, settings.employees_thead_fields);
+        if(modal_id === 'add_patient_modal') trs_list = create_table_trs_list(payload, settings.patients_thead_fields);
         add_table_body(table, trs_list);
     }
 

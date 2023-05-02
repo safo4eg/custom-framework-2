@@ -1,6 +1,14 @@
 ;(function() {
     let auth = {};
 
+    auth.add_patient = async function(payload) {
+        let result = await fetch(settings.auth.prefix + '/add/patient', {
+            method: 'POST',
+            body: payload
+        });
+        return result;
+    }
+
     auth.add_employee = async function(payload) {
         let result = await fetch(settings.auth.prefix + '/add/employee', {
             method: 'POST',

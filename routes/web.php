@@ -10,3 +10,4 @@ Route::add('list', [Controller\ListPage::class, 'show']);
 Route::add('search', [Controller\ListPage::class, 'search']);
 
 Route::add('add/employee', [Controller\Actions::class, 'add_employee']);
+Route::add('add/patient', [Controller\Actions::class, 'add_patient']);

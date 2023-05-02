@@ -38,12 +38,25 @@ class Actions
                 $employee_payload['person_id'] = $person->id;
                 $employee_id = Employee::create($employee_payload)->person_id;
                 $employee[] = Employee::find($employee_id)->toArray();
-//                $employee = Employee::all()->toArray();
                 $covert_employee = Employee::getFieldsInFormattedArray($employee);
                 echo $response->setData($covert_employee); die();
             }
         }
 
+    }
+
+    public function add_patient(Request $request) {
+        if($request->method === 'POST') {
+            $response = new Response();
+            $payload = $request->all();
+
+            if(!empty($payload) && $person = Person::create($payload)) {
+                Patient::create(['person_id' => $person->id, 'status_id' => 1]);
+                $patient[] = Patient::find($person->id)->toArray();
+                $covert_patient = Patient::getFieldsInFormattedArray($patient);
+                echo $response->setData($covert_patient); die();
+            }
+        }
     }
 
 }

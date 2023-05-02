@@ -7,6 +7,7 @@ if(settings.auth.prefix + '/list' === settings.auth.current_uri) {
     let patients_tab = document.getElementById('patients_tab');
 
     let add_employee_btn = document.getElementById('add_employee_btn');
+    let add_patient_btn = document.getElementById('add_patient_btn');
 
     let search_btn = document.getElementById('search_btn');
 
@@ -78,6 +79,16 @@ if(settings.auth.prefix + '/list' === settings.auth.current_uri) {
        actions[1].addEventListener('click', modal_cancel(actions[1], modal));
 
     });
+
+    add_patient_btn.addEventListener('click', function() {
+        let modal_id = modal_window_module.getModalId(add_patient_btn);
+        let modal = document.getElementById(modal_id);
+        let actions = modal_window_module.show(modal);
+
+        actions[0].addEventListener('click', modal_accept(actions[0], modal, table, table_title));
+        actions[1].addEventListener('click', modal_cancel(actions[1], modal));
+
+    });
 }
 
 
@@ -116,13 +127,29 @@ function modal_accept(self, modal, table, table_title) {
                     if(response.status < 400) {
                         if(table_title.textContent.toLowerCase() === 'работники') {
                             payload = JSON.parse(text).data;
-                            interactivity_module.add_new_trs(table, payload);
+                            interactivity_module.add_new_trs(table, payload, modal_id);
                         }
                         interactivity_module.clear_form(form);
                         modal_window_module.cancel(modal);
                         self.removeEventListener('click', func);
                     }
                 });
+            });
+        }
+
+        if(modal_id === 'add_patient_modal') {
+            auth_module.add_patient(payload).then(response => {
+               response.text().then(text => {
+                   if(response.status < 400) {
+                       if(table_title.textContent.toLowerCase() === 'пациенты') {
+                           payload = JSON.parse(text).data;
+                           interactivity_module.add_new_trs(table, payload, modal_id);
+                       }
+                   }
+                   interactivity_module.clear_form(form);
+                   modal_window_module.cancel(modal);
+                   self.removeEventListener('click', func);
+               });
             });
         }
 

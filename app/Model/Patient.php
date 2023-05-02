@@ -8,6 +8,9 @@ use Model\Interfaces\DisplayedInterface;
 class Patient extends Model
 {
     public $timestamps = false;
+    public $primaryKey = 'person_id';
+    public $incrementing = false;
+    protected $fillable = ['person_id', 'status_id'];
     protected $with = ['person'];
     private static $visible_fields = [
         'id' => 'id', 'name' => 'name', 'surname' => 'surname', 'patronymic' => 'patronymic',
