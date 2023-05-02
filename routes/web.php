@@ -9,4 +9,4 @@ Route::add('logout', [Controller\Auth::class, 'logout']);
 Route::add('list', [Controller\ListPage::class, 'show']);
 Route::add('search', [Controller\ListPage::class, 'search']);
 
-Route::add('add', [Controller\Actions::class, 'add_employee']);
+Route::add('add/employee', [Controller\Actions::class, 'add_employee']);

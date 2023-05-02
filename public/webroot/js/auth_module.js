@@ -2,7 +2,7 @@
     let auth = {};
 
     auth.add_employee = async function(payload) {
-        let result = await fetch(settings.auth.prefix + '/add', {
+        let result = await fetch(settings.auth.prefix + '/add/employee', {
             method: 'POST',
             body: payload
         });
