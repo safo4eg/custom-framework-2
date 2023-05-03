@@ -1,9 +1,33 @@
-<?php var_dump($data) ?>
-
 <div class="functions">
     <div class="actions">
         <input id="add_application_btn" class="item" type="button" value="Новая запись">
     </div>
+</div>
+
+<div class="list-wrapper">
+    <div id="table_title" class="title">Работники</div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Врач</th>
+            <th>Кабинет</th>
+            <th>Дата приема</th>
+            <th>Диагноз</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <?php foreach($applications as $application) { ?>
+            <tr>
+                <td><?= $application['employee']['specialization'] ?></td>
+                <td><?= $application['employee']['cabinet'] ?></td>
+                <td><?= $application['date_of_application'] ?></td>
+                <td><?= $application['diagnostic']?? 'Не назначен' ?></td>
+            </tr>
+        <?php } ?>
+
+        </tbody>
+    </table>
 </div>
 
 <div id="add_application_modal" class="modal hidden">

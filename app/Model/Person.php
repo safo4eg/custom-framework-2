@@ -16,4 +16,5 @@ class Person extends Model
     public function patient() {
         return $this->hasOne(Patient::class);
     }
+
 }

@@ -80,7 +80,7 @@ class ListPage
 
         if($request->method === 'GET') {
             $patient_id = $request->all()['id'];
-            $applications = Application::where('patient_id', $patient_id)->get();
+            $applications = Application::where('patient_id', $patient_id)->orderBy('date_of_application', 'desc')->get()->toArray();
             $doctors = Employee::whereIn('role_id', [2, 3, 4])->get()->toArray();
             return new View('list.applications', [
                 'applications' => $applications,
