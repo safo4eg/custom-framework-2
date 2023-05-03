@@ -206,7 +206,11 @@ function edit(table_title) {
                 interactivity_module.clickCancel(td);
             });
         } else if(event.target.classList.contains('application')) {
-            console.log('application');
+            let link = event.target;
+            let tr = event.target.parentElement.parentElement;
+            let patient_id = tr.querySelector('td.hidden input[type="hidden"]').value;
+            link.href = settings.auth.prefix + `/applications/${patient_id}`;
+            window.location.href = link.href;
         }
     }
 }
