@@ -79,7 +79,7 @@
                                 <input class="item" type="text" name="patronymic" placeholder="patronymic">
                                 <input class="item" type="date" name="date_of_birth">
 
-                                <select class="item" name="role_id">
+                                <select id="select_role" class="item" name="role_id">
                                     <?php foreach($roles_list as $role) { ?>
                                         <option value="<?=$role->id?>"><?=$role->name?></option>
                                     <?php } ?>
@@ -87,7 +87,7 @@
 
                                 <input class="item" type="text" name="specialization" placeholder="specialization">
 
-                                <select class="item" name="department_id">
+                                <select id="select_department" class="item" name="department_id">
                                     <?php foreach($departments_list as $department) { ?>
                                         <option value="<?=$department->id?>"><?=$department->name?></option>
                                     <?php } ?>

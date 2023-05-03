@@ -29,8 +29,9 @@ if(settings.auth.prefix + '/list' === settings.auth.current_uri) {
                let payload = JSON.parse(text).data;
                if(response.status < 400) {
                    if(payload.length !== 0) {
-                       if(table_title.textContent.toLowerCase() === 'работники') {
-                           interactivity_module.show_employees_list(table, payload);
+                       let table_title_text = table_title.textContent.toLowerCase();
+                       if(table_title_text === 'работники') {
+                           interactivity_module.show_employees_list(table, payload, table_title_text);
                        } else {
                            interactivity_module.show_patients_list(table, payload);
                        }
@@ -49,7 +50,7 @@ if(settings.auth.prefix + '/list' === settings.auth.current_uri) {
         auth_module.get_employees_list().then(response => {
             response.text().then(text => {
                 let payload = JSON.parse(text).data;
-                interactivity_module.show_employees_list(table, payload);
+                interactivity_module.show_employees_list(table, payload, table_title.textContent.trim().toLowerCase());
             });
         });
     }
@@ -68,7 +69,7 @@ if(settings.auth.prefix + '/list' === settings.auth.current_uri) {
     }
 
 
-    table.addEventListener('click', edit);
+    table.addEventListener('click', edit(table_title));
 
     add_employee_btn.addEventListener('click', function() {
        let modal_id = modal_window_module.getModalId(add_employee_btn);
@@ -165,26 +166,40 @@ function modal_cancel(self, modal) {
     return func;
 }
 
-function edit(event) {
-    event.preventDefault();
-    if(event.target.classList.contains('edit')) {
-        let td = event.target.parentElement;
-        let [actions, td_info] = interactivity_module.clickEdit(td);
+function edit(table_title) {
 
-        actions[0].addEventListener('click', (event) => {
-            console.log(
-                'Отправка запроса на сервер:\r\n' +
-                'Получение новых данных в формате JSON\r\n' +
-                'Занесение всех этих данных в соответствующую ячейку\r\n'
-            );
-        });
+    return function(event) {
+        event.preventDefault();
+        if(event.target.classList.contains('edit')) {
+            let td = event.target.parentElement;
+            let [actions, td_info, form_inputs] = interactivity_module.clickEdit(td);
 
-        actions[1].addEventListener('click', (event) => {
-            for(let [elem, info] of td_info) {
-                elem.textContent = info['text_content'];
-                elem.append(info['hidden_input']);
-            }
-            interactivity_module.clickCancel(td);
-        });
+            actions[0].addEventListener('click', (event) => {
+                let table = table_title.textContent.trim().toLowerCase();
+                let payload = {};
+                payload["table"] = table;
+                form_inputs.forEach(elem => {
+                   payload[elem.name] = elem.value;
+                });
+                payload = JSON.stringify(payload);
+                auth_module.edit(payload).then(response => {
+                    response.text().then(text => {
+                        if(response.status < 400) {
+                            console.log(text);
+                        }
+                    });
+                });
+            });
+
+            actions[1].addEventListener('click', (event) => {
+                for(let [elem, info] of td_info) {
+                    elem.textContent = info['text_content'];
+                    elem.append(info['hidden_input']);
+                }
+                interactivity_module.clickCancel(td);
+            });
+        } else if(event.target.classList.contains('application')) {
+            console.log('application');
+        }
     }
 }

@@ -44,16 +44,16 @@
         create_table_body(table, create_table_trs_list(payload, settings.patients_thead_fields));
     }
 
-    interactivity_module.show_employees_list = function(table, payload) {
+    interactivity_module.show_employees_list = function(table, payload, table_title) {
         clear_table(table);
         create_table_head(table, settings.employees_thead_fields);
-        create_table_body(table, create_table_trs_list(payload, settings.employees_thead_fields));
+        create_table_body(table, create_table_trs_list(payload, settings.employees_thead_fields, table_title));
     }
 
     interactivity_module.clickCancel = function(td) {
+        let edit_cell = createActionsCell();
         td.textContent = '';
-        let edit_cell = createEditCell();
-        td.append(edit_cell);
+        td.append(...Array.from(edit_cell.children));
     }
 
     interactivity_module.clickEdit = function(td) {
@@ -65,14 +65,17 @@
 
         let tds = Array.from(td.parentElement.children);
         let td_info = new Map();
+        let form_inputs = [];
         tds.forEach(elem => {
            if(!elem.classList.contains('action_cell')) {
-               let general_attr = fromTextContentToInput(elem);
+               let info = fromTextContentToInput(elem);
+               let general_attr = info['general_attr'];
                td_info.set(elem, general_attr);
+               form_inputs.push(info['form_elem']);
            }
         });
 
-        return [actions, td_info];
+        return [actions, td_info, form_inputs];
     }
 
     function create_table_trs_list(payload, fields) {
@@ -86,14 +89,14 @@
                 let value = entries[i][1];
                 key_elem[key] = create_table_td(key, value != null? value: 'Отсутствует');
             }
-
-            edit_cell = createEditCell();
+            edit_cell = createActionsCell();
 
             for(let key in fields) {
                 if(key !== 'action') {
                     tr.append(key_elem[key]);
                 }
             }
+            console.log(edit_cell);
             tr.append(edit_cell);
             trs_list.push(tr);
         });
@@ -148,35 +151,60 @@
 
     function fromTextContentToInput(elem) {
         let general_attr = {};
+        let text = elem.textContent.trim();
 
         let hidden_input = elem.querySelector('input[type="hidden"]');
         let hidden_input_value = hidden_input.value;
         general_attr['hidden_input'] = hidden_input;
         general_attr['text_content'] = elem.textContent;
+
+        let form_elem;
+        if(hidden_input_value === 'role' || hidden_input_value === 'department') {
+            form_elem = document.getElementById(`select_${hidden_input_value}`)
+            form_elem = form_elem.cloneNode(true);
+            let options = Array.from(form_elem.children);
+            options.forEach(option => {
+               if(option.textContent === elem.textContent.trim()) option.selected;
+            });
+        } else {
+            form_elem = document.createElement('INPUT');
+            form_elem.name = hidden_input_value;
+            form_elem.value = text !== 'Отсутствует'? text: '';
+            form_elem.classList.add('edit_input');
+            if(hidden_input_value === 'date_of_birth') {
+                form_elem.type = 'date';
+                form_elem.value = elem.textContent.trim().match(/^\d{4}-\d{2}-\d{2}/)[0];
+
+            }
+            else form_elem.placeholder = hidden_input_value;
+        }
+
         elem.textContent = '';
+        elem.append(form_elem);
 
-        let text_input = document.createElement('INPUT');
-        text_input.name = hidden_input_value;
-        text_input.classList.add('edit_input');
-        if(hidden_input_value === 'date_of_birth') text_input.type = 'date';
-        else text_input.placeholder = hidden_input_value;
-
-        elem.append(text_input);
-
-        return general_attr;
+        return {'general_attr': general_attr, 'form_elem': form_elem};
     }
 
-    function createEditCell() {
-        let edit_cell = document.createElement('TD');
-        edit_cell.classList.add('action_cell');
+    function createActionsCell(table_title = 'patietns') {
+        let td = document.createElement('TD');
+        td.classList.add('action_cell');
 
         let edit_link = document.createElement('A');
         edit_link.href = '/';
         edit_link.classList.add('edit');
         edit_link.textContent = 'Редактировать';
 
-        edit_cell.append(edit_link)
-        return edit_cell;
+        td.append(edit_link);
+
+        if(table_title === 'patietns') {
+            let application_link = document.createElement('A');
+            application_link.href = '/';
+            application_link.classList.add('application');
+            application_link.textContent = 'Записи';
+            td.append(application_link);
+        }
+
+        return td;
     }
 
     function createActions() {
