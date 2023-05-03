@@ -37,6 +37,9 @@ class Employee extends Model implements IdentityInterface, DisplayedInterface
     public function person() {
         return $this->belongsTo(Person::class);
     }
+    public function applications() {
+        return $this->hasMany(Application::class);
+    }
 
     public static function getFieldsInFormattedArray(array $employees_list): array {
         $formatted_employees_list = [];

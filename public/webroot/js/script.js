@@ -92,6 +92,20 @@ if(settings.auth.prefix + '/list' === settings.auth.current_uri) {
     });
 }
 
+if(settings.auth.current_uri.search(/^.+\/applications\/patient\?.+/) !== -1) {
+    let add_application_btn = document.getElementById('add_application_btn');
+    let cancel_modal = document.getElementById('cancel_modal');
+    let modal_id = modal_window_module.getModalId(add_application_btn);
+    let modal = document.getElementById(`${modal_id}`);
+    add_application_btn.onclick = (event) => {
+        event.preventDefault();
+        modal_window_module.show(modal);
+    };
+
+    cancel_modal.onclick = (event) => {
+        modal_window_module.cancel(modal);
+    }
+}
 
 if(settings.auth.prefix + '/login' === settings.auth.current_uri) {
     let login_form = document.getElementById('login_form');
@@ -209,7 +223,7 @@ function edit(table_title) {
             let link = event.target;
             let tr = event.target.parentElement.parentElement;
             let patient_id = tr.querySelector('td.hidden input[type="hidden"]').value;
-            link.href = settings.auth.prefix + `/applications/${patient_id}`;
+            link.href = settings.auth.prefix + `/applications/patient?id=${patient_id}`;
             window.location.href = link.href;
         }
     }

@@ -11,6 +11,7 @@ use Src\View;
 use Model\Employee;
 use Model\Patient;
 use Model\Person;
+use Model\Application;
 use Model\Role;
 use Model\Department;
 
@@ -73,6 +74,28 @@ class ListPage
                 echo $response->setData($class::getFieldsInFormattedArray($response_list)); die();
             }
         }
+    }
 
+    public function patient_applications(Request $request): string {
+
+        if($request->method === 'GET') {
+            $patient_id = $request->all()['id'];
+            $applications = Application::where('patient_id', $patient_id)->get();
+            $doctors = Employee::whereIn('role_id', [2, 3, 4])->get()->toArray();
+            return new View('list.applications', [
+                'applications' => $applications,
+                'doctors' => $doctors,
+                'id' => $patient_id]);
+        }
+
+        if($request->method === 'POST') {
+            $payload = $request->all();
+            Application::create([
+                'employee_id' => $payload['doctor'],
+                'date_of_application' => $payload['date_of_application'],
+                'patient_id' => $payload['id']
+            ]);
+            app()->route->redirect("/applications/patient?id={$payload['id']}"); die();
+        }
     }
 }

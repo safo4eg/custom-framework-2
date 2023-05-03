@@ -7,6 +7,7 @@ Route::add('logout', [Controller\Auth::class, 'logout']);
 
 
 Route::add('list', [Controller\ListPage::class, 'show']);
+Route::add('applications/patient', [Controller\ListPage::class, 'patient_applications']);
 Route::add('search', [Controller\ListPage::class, 'search']);
 
 Route::add('add/employee', [Controller\Actions::class, 'add_employee']);
