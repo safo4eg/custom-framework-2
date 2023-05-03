@@ -1,6 +1,7 @@
 <?php
 
 namespace Controller;
+use http\Client\Curl\User;
 use Src\Request;
 use Src\Response;
 use Src\View;
@@ -56,6 +57,40 @@ class Actions
                 $covert_patient = Patient::getFieldsInFormattedArray($patient);
                 echo $response->setData($covert_patient); die();
             }
+        }
+    }
+
+    public function edit(Request $request) {
+        $response = new Response();
+        $payload = $request->all_json();
+
+        if($request->method === 'POST' && !empty($payload)) {
+            Person::where('id', $payload['id'])->update([
+                'name' => $payload['name'],
+                'surname' => $payload['surname'],
+                'patronymic' => $payload['patronymic'],
+                'date_of_birth' => $payload['date_of_birth']
+            ]);
+            $class = null;
+            $response_data = null;
+            if($payload['table'] === 'работники') {
+                $class = Employee::class;
+                $class::find($payload['id'])->update([
+                    'role_id' => $payload['role_id'],
+                    'specialization' => !empty($payload['specialization'])? $payload['specialization']: null,
+                    'department_id' => !empty($payload['department_id'])? $payload['department_id']: null,
+                    'cabinet' => !empty($payload['cabinet'])? $payload['cabinet']: null,
+                    'status_id' => ($payload['status_id'] !== '1')? 2: 1
+                ]);
+                $response_data[] = $class::find($payload['id'])->toArray();
+            } elseif($payload['table'] === 'пациенты') {
+                $class = Patient::class;
+                $class::where('person_id', $payload['id'])->update([
+                    'status_id' => ($payload['status_id'] !== '1')? 2: 1
+                ]);
+                $response_data[] = Patient::where('person_id', $payload['id'])->first()->toArray();
+            }
+            echo $response->setData($class::getFieldsInFormattedArray($response_data));die();
         }
     }
 

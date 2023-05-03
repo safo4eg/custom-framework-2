@@ -51,7 +51,7 @@
     }
 
     interactivity_module.clickCancel = function(td) {
-        let edit_cell = createActionsCell();
+        let edit_cell = createActionsCell(table_title = 'employees');
         td.textContent = '';
         td.append(...Array.from(edit_cell.children));
     }
@@ -87,7 +87,19 @@
             for(let i = 0; i < entries.length; i++) {
                 let key = entries[i][0];
                 let value = entries[i][1];
+
+                // if(key === 'id') {
+                //     let hidden_input = document.createElement('INPUT');
+                //     hidden_input.type = 'hidden';
+                //     hidden_input.value = value;
+                //     hidden_input.name = key;
+                //     tr.append(hidden_input);
+                // }
+
                 key_elem[key] = create_table_td(key, value != null? value: 'Отсутствует');
+                if(key === 'id') {
+                    tr.append(key_elem[key]);
+                }
             }
             edit_cell = createActionsCell();
 
@@ -96,7 +108,7 @@
                     tr.append(key_elem[key]);
                 }
             }
-            console.log(edit_cell);
+
             tr.append(edit_cell);
             trs_list.push(tr);
         });
@@ -123,6 +135,12 @@
         let hidden_input = document.createElement('INPUT');
         hidden_input.type = 'hidden';
         hidden_input.value = key;
+
+        if(key === 'id') {
+            hidden_input.value = value;
+            hidden_input.name = key;
+            td.classList.add('hidden')
+        };
 
         td.textContent = value;
         td.append(hidden_input);
@@ -168,15 +186,19 @@
             });
         } else {
             form_elem = document.createElement('INPUT');
-            form_elem.name = hidden_input_value;
-            form_elem.value = text !== 'Отсутствует'? text: '';
+            if(hidden_input.name === 'id') {
+                form_elem.name = hidden_input.name;
+                form_elem.value = hidden_input_value;
+            } else {
+                form_elem.name = hidden_input_value;
+                form_elem.value = text !== 'Отсутствует'? text: '';
+            }
             form_elem.classList.add('edit_input');
             if(hidden_input_value === 'date_of_birth') {
                 form_elem.type = 'date';
                 form_elem.value = elem.textContent.trim().match(/^\d{4}-\d{2}-\d{2}/)[0];
 
-            }
-            else form_elem.placeholder = hidden_input_value;
+            } else form_elem.placeholder = hidden_input_value;
         }
 
         elem.textContent = '';

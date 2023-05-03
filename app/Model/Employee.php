@@ -25,6 +25,7 @@ class Employee extends Model implements IdentityInterface, DisplayedInterface
         'specialization',
         'department_id',
         'cabinet',
+        'status_id'
     ];
     protected  $with = ['person', 'role', 'department'];
     public function department() {

@@ -4,6 +4,9 @@
     auth.edit = async function(payload) {
         let result = await fetch(settings.auth.prefix + '/edit', {
             method: 'POST',
+            headers: {
+                "Content-type": "application/json"
+            },
             body: payload
         });
         return result;

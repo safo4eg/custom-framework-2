@@ -65,6 +65,10 @@ body {
     margin-left: 5px;
 }
 
+.table td.hidden {
+    display: none;
+}
+
 /* MODAL WINDOW */
 
 .modal {

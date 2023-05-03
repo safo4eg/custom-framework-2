@@ -21,6 +21,13 @@ class Request
         return $this->body + $this->files();
     }
 
+    public function all_json()
+    {
+        $json = file_get_contents('php://input');
+        $payload = json_decode($json, true);
+        return $payload;
+    }
+
     public function set($fields, $value): void
     {
         $this->body[$fields] = $value;

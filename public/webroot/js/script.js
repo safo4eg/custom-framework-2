@@ -184,11 +184,18 @@ function edit(table_title) {
                 payload = JSON.stringify(payload);
                 auth_module.edit(payload).then(response => {
                     response.text().then(text => {
+                        let payload = JSON.parse(text).data;
                         if(response.status < 400) {
-                            console.log(text);
+                            for(let [elem, info] of td_info) {
+                                let text_content =
+                                    (payload[0][info['hidden_input'].value] != null)? payload[0][info['hidden_input'].value]: 'Отсутствуут';
+                                elem.textContent = text_content;
+                                elem.append(info['hidden_input']);
+                            }
                         }
                     });
                 });
+                interactivity_module.clickCancel(td);
             });
 
             actions[1].addEventListener('click', (event) => {

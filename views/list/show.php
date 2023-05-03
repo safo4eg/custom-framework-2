@@ -50,6 +50,10 @@
                                     <input type="hidden" value="<?= $key ?>">
                                     <?= $value ?? 'Отсутствует' ?>
                                 </td>
+                            <?php } else { ?>
+                                <td class="hidden">
+                                    <input type="hidden" name="<?= $key ?>" value="<?= $value ?>">
+                                </td>
                             <?php } ?>
                         <?php } ?>
                         <td class="action_cell">
@@ -91,6 +95,7 @@
                                     <?php foreach($departments_list as $department) { ?>
                                         <option value="<?=$department->id?>"><?=$department->name?></option>
                                     <?php } ?>
+                                    <option value="0">Отсутствует</option>
                                 </select>
 
                                 <input class="item" type="text" name="cabinet" placeholder="cabinet">
