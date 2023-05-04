@@ -83,6 +83,11 @@ class Employee extends Model implements IdentityInterface, DisplayedInterface
         return $this->person_id;
     }
 
+    public function getRole(): int
+    {
+        return $this->role_id;
+    }
+
     public function attemptIdentity(array $credentials)
     {
         return self::where(['login' => $credentials['login'],

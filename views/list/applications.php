@@ -1,3 +1,4 @@
+<?php var_dump($patients); ?>
 <div class="functions">
     <div class="actions">
         <input id="add_application_btn" class="item" type="button" value="Новая запись">
@@ -5,25 +6,54 @@
 </div>
 
 <div class="list-wrapper">
-    <div id="table_title" class="title">Работники</div>
+    <div id="table_title" class="title">Записи</div>
     <table class="table">
         <thead>
         <tr>
-            <th>Врач</th>
-            <th>Кабинет</th>
-            <th>Дата приема</th>
-            <th>Диагноз</th>
+            <?php if(in_array($_SESSION['role'], [2, 3, 4]) && empty($list)) { ?>
+                <th>Имя</th>
+                <th>Фамилия</th>
+                <th>Отчество</th>
+                <th>Дата приема</th>
+                <th>Диагноз</th>
+            <?php } else { ?>
+                <th>Врач</th>
+                <th>Кабинет</th>
+                <th>Дата приема</th>
+                <th>Диагноз</th>
+            <?php } ?>
         </tr>
         </thead>
         <tbody>
 
         <?php foreach($applications as $application) { ?>
-            <tr>
-                <td><?= $application['employee']['specialization'] ?></td>
-                <td><?= $application['employee']['cabinet'] ?></td>
-                <td><?= $application['date_of_application'] ?></td>
-                <td><?= $application['diagnostic']?? 'Не назначен' ?></td>
-            </tr>
+            <?php if(in_array($_SESSION['role'], [2, 3, 4]) && empty($list)) { ?>
+                <tr>
+                    <td><?= $application['patient']['person']['name'] ?></td>
+                    <td><?= $application['patient']['person']['surname'] ?></td>
+                    <td><?= $application['patient']['person']['patronymic'] ?></td>
+                    <td><?= $application['date_of_application'] ?></td>
+                    <?php if(!isset($application['diagnostic'])) { ?>
+                        <td>
+                            Не назначен <br>
+                            <form action="<?= app()->route->getUrl("/add/diagnostic") ?>" method="POST">
+                                <input type="hidden" name="application_id" value="<?=$application['id']?>">
+                                <input type="text" name="diagnostic" placeholder="Введите диагноз">
+                                <input type="submit" value="Назначить">
+                            </form>
+                        </td>
+                    <?php } else { ?>
+                        <td><?= $application['diagnostic'] ?></td>
+                    <?php } ?>
+                </tr>
+            <?php } else { ?>
+                <tr>
+                    <td><?= $application['employee']['specialization'] ?></td>
+                    <td><?= $application['employee']['cabinet'] ?></td>
+                    <td><?= $application['date_of_application'] ?></td>
+                    <td><?= $application['diagnostic']?? 'Не назначен' ?></td>
+                </tr>
+            <?php } ?>
         <?php } ?>
 
         </tbody>
@@ -38,20 +68,43 @@
                 <a href="" title="Close" class="close">×</a>
             </div>
             <div class="modal-body">
-                <form id="add_patient_modal" class="general-form" action="<?= app()->route->getUrl("/applications/patient?id=$id") ?>" method="POST">
+                <form id="add_patient_modal"
+                      class="general-form"
+                      action="<?= app()->route->getUrl($current_uri)."?id=$id" ?>"
+                      method="POST">
+
                     <div class="inputs">
-                        <select class="item" name="doctor">
-                            <?php foreach($doctors as $doctor) { ?>
-                                <option value="<?=$doctor['person_id']?>"><?=$doctor['specialization']?></option>
-                            <?php } ?>
+                        <?php if($current_uri === '/applications/doctor') { ?>
+                            <select class="item" name="patient">
+                                <?php foreach($patients as $patient) { ?>
+                                    <option value="<?= $patient['person_id'] ?>">
+                                        <?= $patient['person']['name']." " ?>
+                                        <?= $patient['person']['surname']." " ?>
+                                        <?= $patient['person']['patronymic'] ?>
+                                    </option>
+                                <?php } ?>
+                            </select>
                             <input class="item" type="date" name="date_of_application">
-                        </select>
+                        <?php } else if($current_uri === '/applications/patient') { ?>
+                            <select class="item" name="doctor">
+                                <?php foreach($doctors as $doctor) { ?>
+                                    <option value="<?=$doctor['person_id']?>">
+                                        (<?=$doctor['specialization']?>)
+                                        <?= $doctor['person']['name']." " ?>
+                                        <?= $doctor['person']['surname']." " ?>
+                                        <?= $doctor['person']['patronymic']?>
+                                    </option>
+                                <?php } ?>
+                                <input class="item" type="date" name="date_of_application">
+                            </select>
+                        <?php } ?>
                     </div>
 
                     <div class="buttons">
                         <input class="item accept" type="submit" value="Принять">
                         <input id="cancel_modal" class="item cancel" type="button" value="Отменить">
                     </div>
+
                 </form>
             </div>
         </div>

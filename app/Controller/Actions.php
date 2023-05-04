@@ -1,7 +1,6 @@
 <?php
 
 namespace Controller;
-use http\Client\Curl\User;
 use Src\Request;
 use Src\Response;
 use Src\View;
@@ -9,6 +8,8 @@ use Src\View;
 use Model\Employee;
 use Model\Patient;
 use Model\Person;
+use Model\Application;
+
 
 class Actions
 {
@@ -91,6 +92,15 @@ class Actions
                 $response_data[] = Patient::where('person_id', $payload['id'])->first()->toArray();
             }
             echo $response->setData($class::getFieldsInFormattedArray($response_data));die();
+        }
+    }
+
+
+    public function add_diagnostic(Request $request) {
+        $payload = $request->all();
+        if($request->method === 'POST') {
+            Application::where('id', $payload['application_id'])->update(['diagnostic' => $payload['diagnostic']]);
+            app()->route->redirect("/applications/doctor?id={$_SESSION['id']}");
         }
     }
 

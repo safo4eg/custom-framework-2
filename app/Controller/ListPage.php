@@ -3,6 +3,7 @@
 namespace Controller;
 
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\App;
 use Src\Request;
 use Src\Response;
 use Src\Session;
@@ -85,7 +86,9 @@ class ListPage
             return new View('list.applications', [
                 'applications' => $applications,
                 'doctors' => $doctors,
-                'id' => $patient_id]);
+                'id' => $patient_id,
+                'current_uri' => '/applications/patient'
+            ]);
         }
 
         if($request->method === 'POST') {
@@ -93,9 +96,35 @@ class ListPage
             Application::create([
                 'employee_id' => $payload['doctor'],
                 'date_of_application' => $payload['date_of_application'],
-                'patient_id' => $payload['id']
+                'patient_id' => $payload['id'],
             ]);
             app()->route->redirect("/applications/patient?id={$payload['id']}"); die();
+        }
+    }
+
+    public function doctor_applications(Request  $request): string {
+
+        if($request->method === 'GET') {
+            $doctor_id = $request->all()['id'];
+            $applications = Application::where('employee_id', $doctor_id)->orderBy('date_of_application', 'desc')->get()->toArray();
+            $patients_ids = Application::getPatientsIds((int) $doctor_id);
+            $patients = Patient::whereIn('person_id', $patients_ids)->get()->toArray();
+            return new View('list.applications', [
+                'id' => $doctor_id,
+                'applications' => $applications,
+                'patients' => $patients,
+                'current_uri' => '/applications/doctor'
+            ]);
+        }
+
+        if($request->method === 'POST') {
+            $payload = $request->all();
+            Application::create([
+                'employee_id' => $payload['id'],
+                'patient_id' => $payload['patient'],
+                'date_of_application' => $payload['date_of_application']
+            ]);
+            app()->route->redirect("/applications/doctor?id={$payload['id']}"); die();
         }
     }
 }

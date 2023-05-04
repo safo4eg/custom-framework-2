@@ -92,7 +92,10 @@ if(settings.auth.prefix + '/list' === settings.auth.current_uri) {
     });
 }
 
-if(settings.auth.current_uri.search(/^.+\/applications\/patient\?.+/) !== -1) {
+if(
+    settings.auth.current_uri.search(/^.+\/applications\/patient\?.+/) !== -1 ||
+    settings.auth.current_uri.search(/^.+\/applications\/doctor\?.+/) !== -1
+) {
     let add_application_btn = document.getElementById('add_application_btn');
     let cancel_modal = document.getElementById('cancel_modal');
     let modal_id = modal_window_module.getModalId(add_application_btn);
