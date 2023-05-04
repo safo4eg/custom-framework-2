@@ -19,7 +19,7 @@
 
     interactivity_module.add_new_trs = function(table, payload, modal_id) {
         let trs_list;
-        if(modal_id === 'add_employee_modal') trs_list = create_table_trs_list(payload, settings.employees_thead_fields);
+        if(modal_id === 'add_employee_modal') trs_list = create_table_trs_list(payload, settings.employees_thead_fields, table_title = 'employees');
         if(modal_id === 'add_patient_modal') trs_list = create_table_trs_list(payload, settings.patients_thead_fields);
         add_table_body(table, trs_list);
     }
@@ -50,8 +50,8 @@
         create_table_body(table, create_table_trs_list(payload, settings.employees_thead_fields, table_title));
     }
 
-    interactivity_module.clickCancel = function(td) {
-        let edit_cell = createActionsCell(table_title = 'employees');
+    interactivity_module.clickCancel = function(td, table_title) {
+        let edit_cell = createActionsCell(table_title = table_title.textContent.trim().toLowerCase());
         td.textContent = '';
         td.append(...Array.from(edit_cell.children));
     }
@@ -78,7 +78,7 @@
         return [actions, td_info, form_inputs];
     }
 
-    function create_table_trs_list(payload, fields) {
+    function create_table_trs_list(payload, fields, table_title = 'пациенты') {
         let trs_list = [];
         payload.forEach(elem => {
             let tr = document.createElement('TR');
@@ -88,20 +88,12 @@
                 let key = entries[i][0];
                 let value = entries[i][1];
 
-                // if(key === 'id') {
-                //     let hidden_input = document.createElement('INPUT');
-                //     hidden_input.type = 'hidden';
-                //     hidden_input.value = value;
-                //     hidden_input.name = key;
-                //     tr.append(hidden_input);
-                // }
-
                 key_elem[key] = create_table_td(key, value != null? value: 'Отсутствует');
                 if(key === 'id') {
                     tr.append(key_elem[key]);
                 }
             }
-            edit_cell = createActionsCell();
+            edit_cell = createActionsCell(table_title);
 
             for(let key in fields) {
                 if(key !== 'action') {
@@ -207,7 +199,7 @@
         return {'general_attr': general_attr, 'form_elem': form_elem};
     }
 
-    function createActionsCell(table_title = 'patietns') {
+    function createActionsCell(table_title = 'пациенты') {
         let td = document.createElement('TD');
         td.classList.add('action_cell');
 
@@ -218,7 +210,7 @@
 
         td.append(edit_link);
 
-        if(table_title === 'patietns') {
+        if(table_title === 'пациенты') {
             let application_link = document.createElement('A');
             application_link.href = '/';
             application_link.classList.add('application');

@@ -209,7 +209,7 @@ function edit(table_title) {
                         }
                     });
                 });
-                interactivity_module.clickCancel(td);
+                interactivity_module.clickCancel(td, table_title);
             });
 
             actions[1].addEventListener('click', (event) => {
@@ -217,7 +217,7 @@ function edit(table_title) {
                     elem.textContent = info['text_content'];
                     elem.append(info['hidden_input']);
                 }
-                interactivity_module.clickCancel(td);
+                interactivity_module.clickCancel(td, table_title);
             });
         } else if(event.target.classList.contains('application')) {
             let link = event.target;

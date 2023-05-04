@@ -16,6 +16,7 @@
             <span>В поликлинике</span>
             <nav>
                 <?php if(app()->auth::check()) { ?>
+                    <a class="link" href="<?= app()->route->getUrl('/list') ?>">Списки</a>
                     <a class="link" href="<?= app()->route->getUrl('/logout') ?>">Выход</a>
                 <?php } else { ?>
                     <a class="link" href="<?= app()->route->getUrl('/login') ?>">Вход</a>
