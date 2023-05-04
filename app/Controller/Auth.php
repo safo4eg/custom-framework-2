@@ -20,7 +20,14 @@ class Auth
         }
 
         if(coreAuth::attempt($payload)){
-            echo $response->setStatus('url')->setCode(302)->setData('/list');die();
+            if($_SESSION['role'] === 4) {
+                echo $response->setStatus('url')->setCode(302)->setData("/applications/doctor?id={$_SESSION['id']}");
+                die();
+            }
+            else {
+                echo $response->setStatus('url')->setCode(302)->setData('/list');
+                die();
+            }
         }
 
         echo $response->setStatus('error')->setCode(400)->setData('Неверный логин и/или пароль'); die();

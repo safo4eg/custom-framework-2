@@ -47,11 +47,16 @@ class ListPage
             }
 
             Session::set('table', 'employees');
-            $employees_list = Employee::getFieldsInFormattedArray(Employee::all()->toArray());
+            $list = null;
+            if($_SESSION['role'] === 1 || $_SESSION['role'] === 2) {
+                $list = Employee::getFieldsInFormattedArray(Employee::all()->toArray());
+            } else if($_SESSION['role'] === 3 || $_SESSION['role'] === 5) {
+                $list = Patient::getFieldsInFormattedArray(Patient::all()->toArray());
+            }
             $roles_list = Role::all();
             $departments_list = Department::all();
             return new View('list.show', [
-                'employees_list' => $employees_list,
+                'list' => $list,
                 'roles_list' => $roles_list,
                 'departments_list' => $departments_list
             ]);

@@ -1,9 +1,10 @@
-<?php var_dump($patients); ?>
-<div class="functions">
-    <div class="actions">
-        <input id="add_application_btn" class="item" type="button" value="Новая запись">
+<?php if($_SESSION['role'] === 5 || (in_array($_SESSION['role'], [2, 3, 4]) && $current_uri === '/applications/doctor')) { ?>
+    <div class="functions">
+        <div class="actions">
+            <input id="add_application_btn" class="item" type="button" value="Новая запись">
+        </div>
     </div>
-</div>
+<?php } ?>
 
 <div class="list-wrapper">
     <div id="table_title" class="title">Записи</div>
@@ -36,11 +37,13 @@
                     <?php if(!isset($application['diagnostic'])) { ?>
                         <td>
                             Не назначен <br>
-                            <form action="<?= app()->route->getUrl("/add/diagnostic") ?>" method="POST">
-                                <input type="hidden" name="application_id" value="<?=$application['id']?>">
-                                <input type="text" name="diagnostic" placeholder="Введите диагноз">
-                                <input type="submit" value="Назначить">
-                            </form>
+                            <?php if(in_array($_SESSION['role'], [2, 3, 4]) && $current_uri === '/applications/doctor') { ?>
+                                <form action="<?= app()->route->getUrl("/add/diagnostic") ?>" method="POST">
+                                    <input type="hidden" name="application_id" value="<?=$application['id']?>">
+                                    <input type="text" name="diagnostic" placeholder="Введите диагноз">
+                                    <input type="submit" value="Назначить">
+                                </form>
+                            <?php } ?>
                         </td>
                     <?php } else { ?>
                         <td><?= $application['diagnostic'] ?></td>

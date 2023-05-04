@@ -31,7 +31,7 @@ class Actions
                 }
 
                 if(in_array($key, $employee_fields)) {
-                    if($key === 'password') $value = md5($value);
+                    if($key === 'department_id' && $value == 0) continue;
                     $employee_payload[$key] = $value;
                 }
             }

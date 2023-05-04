@@ -42,54 +42,62 @@ if(settings.auth.prefix + '/list' === settings.auth.current_uri) {
         });
     }
 
-    employees_tab.onclick = (event) => {
-        patients_tab.classList.remove('active');
-        employees_tab.classList.add('active');
-        table_title.textContent = 'Работники';
+    if(employees_tab != null) {
+        employees_tab.onclick = (event) => {
+            patients_tab.classList.remove('active');
+            employees_tab.classList.add('active');
+            table_title.textContent = 'Работники';
 
-        auth_module.get_employees_list().then(response => {
-            response.text().then(text => {
-                let payload = JSON.parse(text).data;
-                interactivity_module.show_employees_list(table, payload, table_title.textContent.trim().toLowerCase());
+            auth_module.get_employees_list().then(response => {
+                response.text().then(text => {
+                    let payload = JSON.parse(text).data;
+                    interactivity_module.show_employees_list(table, payload, table_title.textContent.trim().toLowerCase());
+                });
             });
-        });
+        }
     }
 
-    patients_tab.onclick = (event) => {
-        employees_tab.classList.remove('active');
-        patients_tab.classList.add('active');
-        table_title.textContent = 'Пациенты';
+    if(patients_tab != null) {
+        patients_tab.onclick = (event) => {
+            if(employees_tab) employees_tab.classList.remove('active');
+            patients_tab.classList.add('active');
+            table_title.textContent = 'Пациенты';
 
-        auth_module.get_patients_list().then(response => {
-           response.text().then(text => {
-               let payload = JSON.parse(text).data;
-               interactivity_module.show_patients_list(table, payload);
-           });
-        });
+            auth_module.get_patients_list().then(response => {
+                response.text().then(text => {
+                    let payload = JSON.parse(text).data;
+                    interactivity_module.show_patients_list(table, payload);
+                });
+            });
+        }
     }
 
 
     table.addEventListener('click', edit(table_title));
 
-    add_employee_btn.addEventListener('click', function() {
-       let modal_id = modal_window_module.getModalId(add_employee_btn);
-       let modal = document.getElementById(modal_id);
-       let actions = modal_window_module.show(modal);
+    if(add_employee_btn != null) {
+        add_employee_btn.addEventListener('click', function() {
+            let modal_id = modal_window_module.getModalId(add_employee_btn);
+            let modal = document.getElementById(modal_id);
+            let actions = modal_window_module.show(modal);
 
-       actions[0].addEventListener('click', modal_accept(actions[0], modal, table, table_title));
-       actions[1].addEventListener('click', modal_cancel(actions[1], modal));
+            actions[0].addEventListener('click', modal_accept(actions[0], modal, table, table_title));
+            actions[1].addEventListener('click', modal_cancel(actions[1], modal));
 
-    });
+        });
+    }
 
-    add_patient_btn.addEventListener('click', function() {
-        let modal_id = modal_window_module.getModalId(add_patient_btn);
-        let modal = document.getElementById(modal_id);
-        let actions = modal_window_module.show(modal);
+    if(add_patient_btn != null) {
+        add_patient_btn.addEventListener('click', function() {
+            let modal_id = modal_window_module.getModalId(add_patient_btn);
+            let modal = document.getElementById(modal_id);
+            let actions = modal_window_module.show(modal);
 
-        actions[0].addEventListener('click', modal_accept(actions[0], modal, table, table_title));
-        actions[1].addEventListener('click', modal_cancel(actions[1], modal));
+            actions[0].addEventListener('click', modal_accept(actions[0], modal, table, table_title));
+            actions[1].addEventListener('click', modal_cancel(actions[1], modal));
 
-    });
+        });
+    }
 }
 
 if(
@@ -145,6 +153,7 @@ function modal_accept(self, modal, table, table_title) {
                     if(response.status < 400) {
                         if(table_title.textContent.toLowerCase() === 'работники') {
                             payload = JSON.parse(text).data;
+                            console.log(payload);
                             interactivity_module.add_new_trs(table, payload, modal_id);
                         }
                         interactivity_module.clear_form(form);

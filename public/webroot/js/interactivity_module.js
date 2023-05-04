@@ -88,7 +88,7 @@
                 let key = entries[i][0];
                 let value = entries[i][1];
 
-                key_elem[key] = create_table_td(key, value != null? value: 'Отсутствует');
+                key_elem[key] = create_table_td(key, (value != null && value != "" && value != 0)? value: 'Отсутствует');
                 if(key === 'id') {
                     tr.append(key_elem[key]);
                 }
