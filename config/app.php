@@ -6,7 +6,8 @@ return [
     //Клас пользователя
     'identity'=>\Model\Employee::class,
     'routeMiddleware' => [
-        'auth' => \Middlewares\AuthMiddleware::class
+        'auth' => \Middlewares\AuthMiddleware::class,
+        'non-access' => \Middlewares\NonAccessMiddleware::class
     ]
 ];
 

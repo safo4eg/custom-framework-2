@@ -127,6 +127,7 @@ if(settings.auth.prefix + '/login' === settings.auth.current_uri) {
         let payload = new FormData(login_form);
         auth_module.login(payload).then(response => {
             response.text().then(text => {
+                console.log(text);
                 text = JSON.parse(text);
                 if(response.status < 400) {
                     if(response.status === 302) {
