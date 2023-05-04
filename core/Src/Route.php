@@ -15,7 +15,7 @@ class Route
 
     private string $currentRoute = '';
     private $currentHttpMethod;
-    private static string $prefix = '';
+    private string $prefix = '';
     private RouteCollector $routeCollector;
 
     public static function add($httpMethod, string $route, array $action): self
