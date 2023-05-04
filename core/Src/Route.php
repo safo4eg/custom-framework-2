@@ -2,58 +2,90 @@
 
 namespace Src;
 use Error;
+
+use FastRoute\RouteCollector;
+use FastRoute\RouteParser\Std;
+use FastRoute\DataGenerator\MarkBased;
+use FastRoute\Dispatcher\MarkBased as Dispatcher;
+use Src\Traits\SingletonTrait;
+
 class Route
 {
-    private static array $routes = [];
+    use SingletonTrait;
+
+    private string $currentRoute = '';
+    private $currentHttpMethod;
     private static string $prefix = '';
+    private RouteCollector $routeCollector;
 
-    public function __construct(string $prefix = '')
+    public static function add($httpMethod, string $route, array $action): self
     {
-        self::setPrefix($prefix);
+        self::single()->routeCollector->addRoute($httpMethod, $route, $action);
+        self::single()->currentHttpMethod = $httpMethod;
+        self::single()->currentRoute = $route;
+        return self::single();
     }
 
-    public function getUrl(string $url): string
+    public static function group(string $prefix, callable $callback): void
     {
-        return self::$prefix . $url;
+        self::single()->routeCollector->addGroup($prefix, $callback);
+        Middleware::single()->group($prefix, $callback);
     }
 
+    private function __construct()
+    {
+        $this->routeCollector = new RouteCollector(new Std(), new MarkBased());
+    }
+
+    public function setPrefix(string $value = ''): self
+    {
+        $this->prefix = $value;
+        return $this;
+    }
 
     public function redirect(string $url): void
     {
         header('Location: ' . $this->getUrl($url));
     }
 
-    public function setPrefix($value)
+    public function getUrl(string $url): string
     {
-        self::$prefix = $value;
+        return $this->prefix . $url;
     }
 
-    public static function add(string $route, array $action): void
+    public function middleware(...$middlewares): self
     {
-        if(!array_key_exists($route, self::$routes)) {
-            self::$routes[$route] = $action;
-        }
+        Middleware::single()->add($this->currentHttpMethod, $this->currentRoute, $middlewares);
+        return $this;
     }
 
     public function start(): void
     {
-        $path = explode('?', $_SERVER['REQUEST_URI'])[0];
-        $path = substr($path, strlen(self::$prefix) + 1);
+        $httpMethod = $_SERVER['REQUEST_METHOD'];
+        $uri = $_SERVER['REQUEST_URI'];
 
-        if(!array_key_exists($path, self::$routes)) {
-            throw new Error('Такого пути нет');
+        if (false !== $pos = strpos($uri, '?')) {
+            $uri = substr($uri, 0, $pos);
         }
-        $class = self::$routes[$path][0];
-        $action = self::$routes[$path][1];
+        $uri = rawurldecode($uri);
+        $uri = substr($uri, strlen($this->prefix));
 
-        if (!class_exists($class)) {
-            throw new Error('Такого класса нет');
+        $dispatcher = new Dispatcher($this->routeCollector->getData());
+
+        $routeInfo = $dispatcher->dispatch($httpMethod, $uri);
+        switch ($routeInfo[0]) {
+            case Dispatcher::NOT_FOUND:
+                throw new Error('NOT_FOUND');
+            case Dispatcher::METHOD_NOT_ALLOWED:
+                throw new Error('METHOD_NOT_ALLOWED');
+            case Dispatcher::FOUND:
+                $handler = $routeInfo[1];
+                $vars = array_values($routeInfo[2]);
+                $vars[] = Middleware::single()->runMiddlewares($httpMethod, $uri);
+                $class = $handler[0];
+                $action = $handler[1];
+                call_user_func([new $class, $action], ...$vars);
+                break;
         }
-
-        if (!method_exists($class, $action)) {
-            throw new Error('Такого метода нет');
-        }
-
-        call_user_func([new $class, $action], new Request());
     }
 }
