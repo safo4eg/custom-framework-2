@@ -32,6 +32,8 @@ if(settings.auth.prefix + '/list' === settings.auth.current_uri) {
                        let table_title_text = table_title.textContent.toLowerCase();
                        if(table_title_text === 'работники') {
                            interactivity_module.show_employees_list(table, payload, table_title_text);
+                           if(employees_tab.classList.contains('active')) employees_tab.classList.remove('active');
+                           else if(patients_tab.classList.contains('active')) patients_tab.classList.remove('active');
                        } else {
                            interactivity_module.show_patients_list(table, payload);
                        }
@@ -44,8 +46,8 @@ if(settings.auth.prefix + '/list' === settings.auth.current_uri) {
 
     if(employees_tab != null) {
         employees_tab.onclick = (event) => {
-            patients_tab.classList.remove('active');
-            employees_tab.classList.add('active');
+            if(patients_tab && patients_tab.classList.contains('active')) patients_tab.classList.remove('active');
+            if(employees_tab) employees_tab.classList.add('active');
             table_title.textContent = 'Работники';
 
             auth_module.get_employees_list().then(response => {
@@ -59,8 +61,8 @@ if(settings.auth.prefix + '/list' === settings.auth.current_uri) {
 
     if(patients_tab != null) {
         patients_tab.onclick = (event) => {
-            if(employees_tab) employees_tab.classList.remove('active');
-            patients_tab.classList.add('active');
+            if(employees_tab && employees_tab.classList.contains('active')) employees_tab.classList.remove('active');
+            if(patients_tab) patients_tab.classList.add('active');
             table_title.textContent = 'Пациенты';
 
             auth_module.get_patients_list().then(response => {
