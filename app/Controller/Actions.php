@@ -25,12 +25,13 @@ class Actions
                 'surname' => ['required'],
                 'patronymic' => ['required'],
                 'date_of_birth' => ['required'],
-                'login' => ['required', 'unique:employees,login'],
-                'password' => ['required'],
+                'login' => ['required', 'latin', 'unique:employees,login'],
+                'password' => ['required', 'latin'],
                 'role_id' => ['required']
             ], [
                 'required' => 'Поле :field не может быть пустым',
-                'unique' => 'Такой :field уже существует'
+                'unique' => 'Такой :field уже существует',
+                'latin' => 'Поле :field должно состоять из a-zA-Z, цифры или "_"'
             ]);
 
             if($validator->fails()) {

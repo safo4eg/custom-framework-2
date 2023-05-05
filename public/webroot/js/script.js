@@ -155,6 +155,7 @@ function modal_accept(self, modal, table, table_title) {
                 response.text().then(text => {
                     if(response.status < 400) {
                         if(table_title.textContent.toLowerCase() === 'работники') {
+                            console.log(text);
                             payload = JSON.parse(text).data;
                             console.log(payload);
                             interactivity_module.add_new_trs(table, payload, modal_id);
