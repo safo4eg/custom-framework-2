@@ -8,7 +8,6 @@
     <title>Login</title>
 </head>
 <body>
-<?= var_dump($_SESSION) ?>
 <main class="index">
     <div class="form-wrapper">
         <div class="title">Вход</div>
