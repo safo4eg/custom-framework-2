@@ -3,6 +3,7 @@
 namespace Controller;
 use Src\Request;
 use Src\Response;
+use Src\Validator\Validator;
 use Src\View;
 
 use Model\Employee;
@@ -18,6 +19,23 @@ class Actions
         if($request->method === 'POST') {
             $response = new Response();
             $payload = $request->all();
+
+            $validator = new Validator($payload, [
+                'name' => ['required'],
+                'surname' => ['required'],
+                'patronymic' => ['required'],
+                'date_of_birth' => ['required'],
+                'login' => ['required', 'unique:employees,login'],
+                'password' => ['required'],
+                'role_id' => ['required']
+            ], [
+                'required' => 'Поле :field не может быть пустым',
+                'unique' => 'Такой :field уже существует'
+            ]);
+
+            if($validator->fails()) {
+                echo $response->setStatus('error')->setCode(400)->setData($validator->errors()); die();
+            }
 
             $person_fields = ['name', 'surname', 'patronymic', 'date_of_birth'];
             $person_payload = [];
@@ -51,6 +69,19 @@ class Actions
         if($request->method === 'POST') {
             $response = new Response();
             $payload = $request->all();
+
+            $validator = new Validator($payload, [
+                'name' => ['required'],
+                'surname' => ['required'],
+                'patronymic' => ['required'],
+                'date_of_birth' => ['required'],
+            ], [
+                'required' => 'Поле :field не может быть пустым',
+            ]);
+
+            if($validator->fails()) {
+                echo $response->setStatus('error')->setCode(400)->setData($validator->errors()); die();
+            }
 
             if(!empty($payload) && $person = Person::create($payload)) {
                 Patient::create(['person_id' => $person->id, 'status_id' => 1]);

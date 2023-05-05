@@ -162,6 +162,8 @@ function modal_accept(self, modal, table, table_title) {
                         interactivity_module.clear_form(form);
                         modal_window_module.cancel(modal);
                         self.removeEventListener('click', func);
+                    } else {
+                        console.log(text);
                     }
                 });
             });
@@ -175,6 +177,8 @@ function modal_accept(self, modal, table, table_title) {
                            payload = JSON.parse(text).data;
                            interactivity_module.add_new_trs(table, payload, modal_id);
                        }
+                   } else {
+                       console.log(text);
                    }
                    interactivity_module.clear_form(form);
                    modal_window_module.cancel(modal);

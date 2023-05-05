@@ -2,7 +2,7 @@
 
 namespace Src\Validator;
 
-class AbstractValidator
+abstract class AbstractValidator
 {
     //Наименование валидируемого поля
     protected string $field = '';

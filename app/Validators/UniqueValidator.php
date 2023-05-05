@@ -4,7 +4,7 @@ namespace Validators;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Src\Validator\AbstractValidator;
 
-class UniqueValidator
+class UniqueValidator extends AbstractValidator
 {
     protected string $message = 'Field :field must be unique';
 
