@@ -9,6 +9,9 @@ return [
         'auth' => \Middlewares\AuthMiddleware::class,
         'non-access' => \Middlewares\NonAccessMiddleware::class
     ],
+    'routeAppMiddleware' => [
+        'trim' => \Middlewares\TrimMiddleware::class
+    ],
     'validators' => [
         'required' => \Validators\RequireValidator::class,
         'unique' => \Validators\UniqueValidator::class
