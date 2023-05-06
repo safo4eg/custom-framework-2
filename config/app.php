@@ -10,7 +10,8 @@ return [
         'non-access' => \Middlewares\NonAccessMiddleware::class
     ],
     'routeAppMiddleware' => [
-        'trim' => \Middlewares\TrimMiddleware::class
+        'trim' => \Middlewares\TrimMiddleware::class,
+        'specialChars' => \Middlewares\SpecialCharsMiddleware::class
     ],
     'validators' => [
         'required' => \Validators\RequireValidator::class,
