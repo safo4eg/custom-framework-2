@@ -2,6 +2,13 @@
     <div class="functions">
         <div class="actions">
             <input id="add_application_btn" class="item" type="button" value="Новая запись">
+            <form action="<?= app()->route->getUrl('/add_file') ?>"
+                  method="post"
+                  enctype="multipart/form-data">
+                <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
+                <input type="file" name="files[]" multiple>
+                <input type="submit" value="Отправить">
+            </form>
         </div>
     </div>
 <?php } ?>

@@ -5,6 +5,7 @@ use Src\Request;
 use Src\Response;
 use Src\Validator\Validator;
 use Src\View;
+use Src\Files;
 
 use Model\Employee;
 use Model\Patient;
@@ -132,7 +133,19 @@ class Actions
         $payload = $request->all();
         if($request->method === 'POST') {
             Application::where('id', $payload['application_id'])->update(['diagnostic' => $payload['diagnostic']]);
-            app()->route->redirect("/applications/doctor?id={$_SESSION['id']}");
+            app()->route->redirect("/applications/doсtor?id={$_SESSION['id']}");
+        }
+    }
+
+    public function add_file(Request $request) {
+        if($request->method === 'POST') {
+            $files = $request->all()['files'];
+
+            $files_handle = new Files(['image/png' => 1024*1024*2, 'text/plain' => 1024*1024*1.5]);
+            $res = $files_handle->setFiles($files)->upload();
+            if(!$res) {
+                var_dump($files_handle->errors);
+            }
         }
     }
 

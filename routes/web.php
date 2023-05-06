@@ -16,3 +16,4 @@ Route::add('POST','/add/employee', [Controller\Actions::class, 'add_employee'])-
 Route::add('POST','/add/patient', [Controller\Actions::class, 'add_patient'])->middleware('auth');
 Route::add('POST','/add/diagnostic', [Controller\Actions::class, 'add_diagnostic'])->middleware('auth');
 Route::add('POST','/edit', [Controller\Actions::class, 'edit']);
+Route::add(['GET', 'POST'], '/add_file', [Controller\Actions::class, 'add_file']);
