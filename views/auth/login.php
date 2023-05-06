@@ -12,6 +12,7 @@
     <div class="form-wrapper">
         <div class="title">Вход</div>
         <form id="login_form" action="/" method="POST">
+            <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
             <input type="text" name="login" placeholder="login">
             <input type="password" name="password" placeholder="password">
             <input id="login_btn" class="btn" type="submit" value="Войти">

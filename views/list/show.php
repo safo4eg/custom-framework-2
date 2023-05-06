@@ -102,6 +102,7 @@
                     <div class="modal-body">
                         <form id="add_employee_form" class="general-form" action="/">
                             <div class="inputs">
+                                <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
                                 <input class="item" type="text" name="login" placeholder="login">
                                 <input class="item" type="password" name="password" placeholder="password">
                                 <input class="item" type="text" name="name" placeholder="name">
@@ -147,6 +148,7 @@
                         </div>
                         <div class="modal-body">
                             <form id="add_patient_modal" class="general-form" action="/">
+                                <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
                                 <div class="inputs">
                                     <input class="item" type="text" name="name" placeholder="name">
                                     <input class="item" type="text" name="surname" placeholder="surname">

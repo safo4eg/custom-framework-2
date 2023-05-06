@@ -8,6 +8,13 @@ class Auth
     // хранение любого класса, который implements interface IdentityInterface;
     private static IdentityInterface $employee;
 
+    public static function generateCSRF(): string
+    {
+        $token = md5(time());
+        Session::set('csrf_token', $token);
+        return $token;
+    }
+
     //инициализация класса пользователя
     public static function init(IdentityInterface $employee): void
     {
